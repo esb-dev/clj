@@ -275,8 +275,7 @@ aufgerufen
 - Es gibt aber die Funktion `partial` mit der man explizit eine
 Funktion mit einem Parameter weniger erzeugen kann
 - Man kann auch variadische Funktionen definieren, die selbst Currying machen,
-siehe [Diskussion in der Clojure Google Group] 
-(https://groups.google.com/forum/#!topic/clojure/cE2FUrkPW8I) 
+siehe [Diskussion in der Clojure Google Group](https://groups.google.com/forum/#!topic/clojure/cE2FUrkPW8I) 
 ")
 
 ;; Weiter mit Funktionen, die Funktionen erzeugen
@@ -565,6 +564,78 @@ x
 (binding [*dynamic* 43] *dynamic*)
 
 *dynamic*
+
+; Threading Macros -------------------------------------------------------------------------------
+
+(pres "
+#Threading Macros
+
+- Ausdrücke muss man in LISP immer von innen nach Außen lesen.
+- Das kann mühsam sein:        
+
+        (dec (/ (+ 5 3) 2))
+ 
+- Die sogenannten Threading Macros erlauben es Werte ''in Funktionen zu stopfen''
+
+        (-> 5 (+ 3) (/ 2) dec)        
+  
+- Es gibt       
+
+        (-> ...)         thread-first
+        (->> ...)        thread-last
+        (as-> ...)       thread-as        
+        (some-> ...)
+        (some->> ...)
+        (cond-> ...)          
+ 
+- siehe [Threading Macros Guide] (https://clojure.org/guides/threading_macros)
+")
+
+(dec (/ (+ 5 3) 2))
+; => 3
+
+(-> 5 (+ 3) (/ 2) dec)
+; => 3
+
+; Was passiert?
+(-> 5 (+ 3))
+; => 8, nämlich (+ 5 3)
+
+(-> 8 (/ 2))
+; => 4, nämlich (/ 8 2) 
+
+(-> 4 dec)
+; => 3, nämlich (dec 4)
+
+; Im Unterschied hierzu
+
+(->> 5 (+ 3) (/ 2) dec)
+; => -3/4
+
+(->> 5 (+ 3))
+; => 8, nämlich (+ 3 5)
+
+(->> 8 (/ 2))
+; => 1/4, nämlich  (/ 2 8)
+
+(->> 1/4 dec)
+; => - 3/4, nämlich (dec 1/4)
+
+; besonders praktisch beim Verwenden von Java-Funktionen:
+
+(second (.split (.replace (.toUpperCase "abcd") "B" "2") ""))
+; => 2
+
+(-> "abcd"
+    .toUpperCase
+    (.replace "B" "2")
+    (.split "")
+    second)
+; => 2
+
+; Mehr zu den anderen Makros
+; (https://clojure.org/guides/threading_macros)
+
 
 ; Seiteneffekte ----------------------------------------------------------------------------------
 (pres "
