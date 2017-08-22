@@ -3,6 +3,7 @@
 ; (c) 2014 - 2015 by Burkhardt Renz, THM
 
 (ns clj.l01-paradigmen
+  (:refer-clojure :exclude [==])
   (:require [clj.presentation :refer :all])
   (:require [clojure.repl :refer :all])
   (:require [clojure.core.logic :refer :all]))
@@ -123,10 +124,22 @@ Wichtigste Paradigmen:
 - Programm zur Laufzeit ↔ Geflecht von Objekten, die durch Nachrichten interagieren
 - Objekte kapseln ihren Zustand, der durch Methoden/Nachrichten geändert wird
 - Klassen sind Vorlagen für Objekte, die zur Laufzeit instanziiert werden
--Vererbung von Schnittstellen und Verhalten 
+- Vererbung von Schnittstellen und Verhalten 
 - Polymorphismus
 - Beispiel: Smalltalk, C++, Java, C#    
   Stack in Java (`JavaStack.java`) vs. Stack in Clojure
+")
+
+;------------------------------------------------------------------------
+(pres :add "
+# Vergleich 00 und FP
+
+>OO makes code understandable by encapsulating moving parts.
+
+>FP makes code understandable by minimizing moving parts.
+ 
+>Michael Feathers
+
 ")
 
 ;; Stack in Java
