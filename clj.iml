@@ -42,7 +42,7 @@
     <orderEntry type="library" name="Leiningen: com.miglayout/miglayout:3.7.4" level="project" />
     <orderEntry type="library" name="Leiningen: dire:0.5.4" level="project" />
     <orderEntry type="library" name="Leiningen: j18n:1.0.2" level="project" />
-    <orderEntry type="library" name="Leiningen: markdown-clj:0.9.99" level="project" />
+    <orderEntry type="library" name="Leiningen: markdown-clj:1.0.0" level="project" />
     <orderEntry type="library" name="Leiningen: org.apache.xmlgraphics/batik-awt-util:1.8" level="project" />
     <orderEntry type="library" name="Leiningen: org.apache.xmlgraphics/batik-css:1.8" level="project" />
     <orderEntry type="library" name="Leiningen: org.apache.xmlgraphics/batik-dom:1.8" level="project" />
@@ -53,13 +53,13 @@
     <orderEntry type="library" name="Leiningen: org.bouncycastle/bcmail-jdk14:1.38" level="project" />
     <orderEntry type="library" name="Leiningen: org.bouncycastle/bcprov-jdk14:1.38" level="project" />
     <orderEntry type="library" name="Leiningen: org.bouncycastle/bctsp-jdk14:1.38" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/clojure:1.9.0-alpha16" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/clojure:1.9.0-alpha19" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.async:0.3.443" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.cache:0.6.5" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.incubator:0.1.3" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.logic:0.8.11" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.memoize:0.5.9" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/core.specs.alpha:0.1.10" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/core.specs.alpha:0.1.24" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/data.priority-map:0.0.7" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/math.combinatorics:0.1.4" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/math.numeric-tower:0.0.4" level="project" />
