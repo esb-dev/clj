@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 2
 ; Einführung in Clojure
-; (c) 2013 - 2015 by Burkhardt Renz, THM
+; (c) 2013 - 2017 by Burkhardt Renz, THM
 
 (ns clj.l02-intro
   (:require [clj.presentation :refer :all]))
@@ -59,8 +59,8 @@ Diesen Baum kann man auch als Liste schreiben:
 
     (+ (* 2 20) 2)
     
-In einem Lisp ist diese Liste ausführbar, die
-Syntax ist der abstrakte Syntaxbaum selbst
+In einem Lisp ist diese Liste ausführbar, die 
+Syntax ist der abstrakte Syntaxbaum selbst 
 (fast jedenfalls).    
 ")
 
@@ -115,9 +115,14 @@ Ergebnis berechnen möchte?
 ; Anonyme Funktion (Lambda)
 ;
 ((fn [x] (* x x)) 2)
+
+; kürzer auch
+(#(* % %) 2)
 ;
 ; Funktion als Wert
 (def square (fn [x] (* x x)))
+
+square
 
 (def two 2)
 (square two)
@@ -289,14 +294,10 @@ KontoA
   Java verwenden, Exceptions, Typ-Hinweise, Arrays, Klassen und Interfaces
 - Makroprogrammierung:      
   Syntax, Idiome und Muster
-- Logik-Programmierung:    
-  core.logic
 - Softwaretechnik mit Clojure:   
   Namespaces, Metadata, Test, Assertions, Performance
-- Clojure im wirklichen Leben:   
-  GUI-Programmierung, Web-Programmierung, Datenbank-Zugriff
-- Interessante Bibliotheken:     
-  quil, seesaw, clucy, . . .  
+- Logik in Clojure:
+  lwb The Logic Workbench  
 ")
 
 ; -------------------------------------------------------------------------------------------------
@@ -304,10 +305,10 @@ KontoA
 # Installation und Entwicklungsumgebungen
 
 - [Try Clojure](http://tryclj.com/)
-- [ClojureScript REPL] (http://clojurescript.net)
-- [Clojure pur] (http://clojure.org/downloads)
-- Viele Entwickler verwenden [Leiningen] (http://leiningen.org)    
-  Leiningen works with projects. 
+- [ClojureScript REPL](http://clojurescript.net)
+- [Clojure pur](http://clojure.org/downloads)
+- Viele Entwickler verwenden [Leiningen](http://leiningen.org):
+- Leiningen works with projects. 
   A project is a directory containing a group of Clojure 
   (and possibly Java) source files, along with a bit of metadata about them.   
   The metadata is stored in a file named `project.clj` in the project’s root directory, 
@@ -330,11 +331,11 @@ KontoA
 (pres "
 # Entwicklungsumgebungen
 
-- Eclipse mit [Counterclockwise] (https://github.com/laurentpetit/ccw/wiki/GoogleCodeHome)
-- [Light Table] (http://www.lighttable.com)
-- IntelliJ mit [Cursive] (https://cursiveclojure.com)
-- vim mit [fireplace] (https://github.com/tpope/vim-fireplace)
-- [emacs] ( http://clojure-doc.org/articles/tutorials/emacs.html)
+- Eclipse mit [Counterclockwise](https://github.com/laurentpetit/ccw/wiki/GoogleCodeHome)
+- [Light Table](http://www.lighttable.com)
+- IntelliJ mit [Cursive](https://cursiveclojure.com)
+- vim mit [fireplace](https://github.com/tpope/vim-fireplace)
+- emacs mit [CIDER](https://github.com/clojure-emacs/cider)
 - und andere mehr
 ")
 
@@ -343,16 +344,16 @@ KontoA
 # Internet-Quellen
 
 - Rich Hickey and the Clojure Community:    
-  [Clojure home] (http://clojure.org)
+  [Clojure home](http://clojure.org)
 - The Clojure Community:    
-  [Clojure Google Group] (https://groups.google.com/forum/#!forum/clojure)
+  [Community Resources](https://clojure.org/community/resources)
 - The Clojure Community:     
-  [Clojure Documentation] (http://clojure-doc.org/)
+  [Clojure Documentation](http://clojure-doc.org/)
 - Grimoire:     
-  [Grimoire - Clojure Documentation] (http://conj.io)
+  [Grimoire - Clojure Documentation](http://conj.io)
 - Bibliotheken:     
-  [CrossClj] (https://crossclj.info)     
-  [The Clojure Toolbox] (http://www.clojure-toolbox.com)     
+  [CrossClj](https://crossclj.info)     
+  [The Clojure Toolbox](http://www.clojure-toolbox.com)     
 - und unzählige mehr  
 ")
 
@@ -366,7 +367,7 @@ KontoA
 - Chas Emerick, Brian Carper, Christophe Grand:  
   _Clojure Programming_, O’Reilly 2012.
 - Dominikus Herzberg:   
-  _Funktionale Programmierung mit Clojure_, [Blog] (http://denkspuren.blogspot.de/2013/04/freies-clojure-buch-funktionale.html)
+  _Funktionale Programmierung mit Clojure_, [Blog](http://denkspuren.blogspot.de/2013/04/freies-clojure-buch-funktionale.html)
 - Stefan Kamphausen, Tim Oliver Kaiser:    
   _Clojure_, dpunkt.verlag, 2010.
 - Stuart Halloway, Aaron Bedra:   
