@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 1
 ; Paradigmen der Programmierung
-; (c) 2014 - 2015 by Burkhardt Renz, THM
+; (c) 2014 - 2017 by Burkhardt Renz, THM
 
 (ns clj.l01-paradigmen
   (:refer-clojure :exclude [==])
@@ -98,7 +98,7 @@ Wichtigste Paradigmen:
   System sucht eine Bindung logischer Variablen, die die 
   in der Spezifikation gestellten Bedingungen erfüllen
 - Mehrere Lösung (sogar unendlich viele) möglich
-- Beispiele: PROLOG, MiniKanren, core.logic in Clojure
+- Beispiele: PROLOG, Coq, MiniKanren, core.logic in Clojure
 ")
 
 ;; Relationale Programmierung mit core.logic
@@ -113,7 +113,7 @@ Wichtigste Paradigmen:
 ; Anmerkungen:
 ; x y s sind logische Variablen
 ; (membero ...) legt Wertebereich für mögliche Bindungen fest
-; (project ..) "projeziert" die logischen Variablen auf die gebundenen Werte
+; (project ..) "projiziert" die logischen Variablen auf die gebundenen Werte
 ; (== ...) Unifikation
 
 
@@ -130,19 +130,9 @@ Wichtigste Paradigmen:
   Stack in Java (`JavaStack.java`) vs. Stack in Clojure
 ")
 
-;------------------------------------------------------------------------
-(pres :add "
-# Vergleich 00 und FP
-
->OO makes code understandable by encapsulating moving parts.
-
->FP makes code understandable by minimizing moving parts.
- 
->Michael Feathers
-
-")
-
 ;; Stack in Java
+;; siehe JavaStack.java
+
 ;; und hier jetzt Stack in Clojure
 
 ; st ist ein Symbol für den Stack [1 2]
@@ -172,6 +162,19 @@ st
 
 ; auch das ändert st nicht!
 st
+
+
+;------------------------------------------------------------------------
+(pres :add "
+# Vergleich 00 und FP
+
+>OO makes code understandable by encapsulating moving parts.
+
+>FP makes code understandable by minimizing moving parts.
+ 
+>Michael Feathers
+
+")
 
 ;------------------------------------------------------------------------
 (pres "
@@ -225,7 +228,8 @@ z.B. Scala
 
 > `(* (+ 2 3) (square 3))` 
 
-z.B. Scheme, Clojure    
+z.B. Scheme, Clojure
+    
 Code = Daten, Homoikonizität
 
 ")
@@ -264,3 +268,4 @@ Code = Daten, Homoikonizität
 6. Gut geeignet für Nebenläufigkeit, inhärent thread-sicher
 ")
 
+;; fin Vorlesung 1 Paradigmen
