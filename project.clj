@@ -1,4 +1,4 @@
-(defproject clj "0.1.0-SNAPSHOT"
+(defproject clj "0.2.0-SNAPSHOT"
   :description "Vorlesung Programmierung in Clojure"
   :url "http://homespages.mni.thm.de/~hg11260"
   :license {:name "Eclipse Public License"

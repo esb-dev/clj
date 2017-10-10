@@ -296,8 +296,7 @@ KontoA
   Syntax, Idiome und Muster
 - Softwaretechnik mit Clojure:   
   Namespaces, Metadata, Test, Assertions, Performance
-- Logik in Clojure:
-  lwb The Logic Workbench  
+- Logik in Clojure mit der Logic Workbench lwb
 ")
 
 ; -------------------------------------------------------------------------------------------------
@@ -354,6 +353,7 @@ KontoA
 - Bibliotheken:     
   [CrossClj](https://crossclj.info)     
   [The Clojure Toolbox](http://www.clojure-toolbox.com)     
+- Vorlesungsskripte [Programmieren in Clojure](https://github.com/esb-dev/clj)
 - und unzählige mehr  
 ")
 

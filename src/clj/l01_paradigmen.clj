@@ -50,7 +50,7 @@ Wichtigste Paradigmen:
   → _imperativ_ (lat. imperare = befehlen)
 - Programmierung durch Veränderung des Speicherzustands mittels Wertzuweisung
 - Maschinenorientierte Datenstrukturen
-- Beispiele: FORTRAN, Pascal, C   
+- Beispiele: FORTRAN, Pascal, C,  
   Summieren in Java (siehe `Summieren.java`)
 ")
 
@@ -86,7 +86,6 @@ Wichtigste Paradigmen:
   (reduce + (range anfang ende)))
 
 (summieren 1 11)
-
 
 ;------------------------------------------------------------------------
 (pres "
