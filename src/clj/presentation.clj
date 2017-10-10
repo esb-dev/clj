@@ -25,7 +25,7 @@
   )
 
 ;; Markdown to Html with pegdown
-(def html-head 
+(def html-head
   "<!DOCTYPE html>
    <html>
    <head>
@@ -54,20 +54,21 @@
    (pres :add source) Append source to current slide"
   ([source] (pres :replace source))
   ([mode source]
-   ; modify atom last-source
+    ; modify atom last-source
    (case mode
      :replace (reset! last-source source)
-     :add     (swap!  last-source #(str % \newline source)))
-   ; transform to html and show
+     :add (swap! last-source #(str % \newline source)))
+    ; transform to html and show
    (-> @last-source
        markdown
        show)))
-   
+
 (defn init
   ([titel] (init "# Vorlesung Clojure\n\n" titel))
   ([head title]
-    (launch)
-    (Thread/sleep 1000)
-    (pres (str head title "\n\n"))))
+   (memoize  ; do the init just once in a REPL
+     (do (launch)
+         (Thread/sleep 1000)
+         (pres (str head title "\n\n"))))))
 
 
