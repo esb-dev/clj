@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 4
 ; Funktionen
-; (c) 2013 - 2015 by Burkhardt Renz, THM
+; (c) 2013 - 2017 by Burkhardt Renz, THM
 
 (ns clj.l04-fn
   (:require [clj.presentation :refer :all])
@@ -18,13 +18,12 @@ stop
 
 - Eine Funktion _f_ ordnet jedem Element _x_ einer Definitionsmenge _D_ genau ein 
   Element _y_ einer Zielmenge _Z_ zu:
-  
 > _f_ : _D_ → _Z_, 
+>    
 > _x_ → _y_, auch _f(x)_ = _y_  
 
 - Oft wird die Funktion durch eine ''Rechenvorschrift'' definiert:    
   Zum Beispiel:
-  
 > _f_ : _Int_ → _Nat_, _f(x)_ = _x * x_ 
 
 - Anwendung der Funktion:   
@@ -65,7 +64,6 @@ In Clojure kann man Funktionen definieren:
     1
     (* n (fact (dec n))))) 5)
 
-
 ; def ------------------------------------------------------------
 ; Funktion wird einer var zugewiesen und kann deshalb via eines
 ; Symbols aufgelöst werden
@@ -88,7 +86,6 @@ In Clojure kann man Funktionen definieren:
 
 (doc sq)
 
-
 ; Funktionen mit mehreren Parametern -------------------------------
 (defn power
   "Calculates b to the power of exp"
@@ -98,6 +95,8 @@ In Clojure kann man Funktionen definieren:
 (power 2 3)
 
 (def pow-base2 (partial power 2))
+
+(doc partial)
 
 (pow-base2 2)
 (pow-base2 3)
@@ -152,13 +151,13 @@ Eine Funktion höherer Ordnung ist eine Funktion, die
 (pres "
 #Beispiel: Worte untersuchen
 
-- Wir möchten eine Funktion haben, die ein Wort überprüft, 
-ob es mit einem bestimmten Buchstaben beginnt.
-- Wir entscheiden uns dazu eine Funktion zu schreiben, 
-die eine Funktion erzeugt, die ein Wort auf einen je bestimmten Anfang überprüft.
+- Wir möchten eine Funktion haben, die ein Wort überprüft,  
+ ob es mit einem bestimmten Buchstaben beginnt.
+- Wir entscheiden uns dazu eine Funktion zu schreiben, die 
+ eine Funktion erzeugt, die ein Wort auf einen je bestimmten Anfang überprüft.
 - Gegeben eine Wortliste gibt es die Funktion `filter`, 
-die ein Prädikat auf jedes Element anwendet und entsprechend filtert
-- Nun suchen wir mal alle Worte, die mit „a“ beginnen und alle, die mit „b“beginnen
+ die ein Prädikat auf jedes Element anwendet und entsprechend filtert
+- Nun suchen wir mal alle Worte, die mit „a“ beginnen und alle, die mit „b“ beginnen
 - Und nun mal alle Palindrome . . .
 ")
 
@@ -239,6 +238,7 @@ die ein Prädikat auf jedes Element anwendet und entsprechend filtert
 (def add-two (partial + 2))
 
 (add-two 7)
+
 (add-two 7 8)
 
 ;; Diskussion Currying
@@ -262,20 +262,20 @@ mit einer Variablen sukzessive aufzulösen hat Moses Schönfinkel
 1924 entwickelt.
 
 Später hat Haskell Brooks Curry dies aufgegriffen und systematisch
-ausgearbeitet, deshalb spricht man von Currying, dabei müsste
-es wohl ''Schönfinkeln'' heißen.
+ausgearbeitet, deshalb spricht man von _Currying_, dabei müsste
+es wohl _Schönfinkeln_ heißen.
 ")
 
 (pres :add "
 ## in Clojure:
 
 - Da Clojure variadische Funktionen unterstützt (und bevorzugt)
-wird die definierte Funktion für die jeweils angegebene Zahl von Parametern
-aufgerufen
+ wird die definierte Funktion für die jeweils angegebene Zahl von Parametern
+ aufgerufen
 - Es gibt aber die Funktion `partial` mit der man explizit eine
-Funktion mit einem Parameter weniger erzeugen kann
+ Funktion mit einem Parameter weniger erzeugen kann
 - Man kann auch variadische Funktionen definieren, die selbst Currying machen,
-siehe [Diskussion in der Clojure Google Group](https://groups.google.com/forum/#!topic/clojure/cE2FUrkPW8I) 
+ siehe [Diskussion in der Clojure Google Group](https://groups.google.com/forum/#!topic/clojure/cE2FUrkPW8I) 
 ")
 
 ;; Weiter mit Funktionen, die Funktionen erzeugen
@@ -288,11 +288,14 @@ countif
 (doc count)
 (doc comp)
 
-(countif even? [1 2 3 4 5 6])
+; countif führt erst filter aus, erwartet also zwei Argumente: pred coll
+; danach kommt count dran, was auf des Ergebnis von filter angewandt wird
+
+(countif even? [1 2 3 4 5 6 7])
 ; => 3
 
 (countif #(> % 1) [1 2 3 4 5 6])
-; => 5
+; => 5 Zahlen in der Kollektion sind > 1
 
 ; complement
 (def not-empty? (complement empty?))
@@ -350,11 +353,12 @@ countif
 (take 6 (repeatedly #(rand-int 49)))
 
 (repeatedly 6 #(rand-int 49))
+; wenn man so Lotto-Zahlen erzeugt, was könnte passieren?
 
-; was könnte passieren?
 (take 6 (distinct (map inc (repeatedly #(rand-int 49)))))
 
 (doc distinct)
+
 ; ---------------------------------------------------------------------------------
 (pres "
 #Kontrollkonstrukte in Clojure (Teil 1)
@@ -406,6 +410,7 @@ countif
 ; => :t Warum??
 
 (javadoc Boolean)
+; "It is rarely appropriate to use this (Boolean) constructor"
 
 (if Boolean/FALSE :t :f)
 ; => :f
@@ -463,6 +468,25 @@ countif
 
 (doc condp)
 
+(defn some' [coll]
+  (condp some coll
+    #{6} :>> inc
+    #{4} :>> dec
+    #{1} :>> #(+ % 3)) )
+
+(some #{6} [1 2 3 4])
+; => nil
+(some #{4} [1 2 3 4])
+; => 4
+
+(doc some)
+
+(some' [1 2 3 4])
+; => 3
+
+(some' [6 7 8])
+; => 7
+
 ; case ---------------------------------
 (defn one2four [n]
   (case n
@@ -479,24 +503,25 @@ countif
 
 (one2four "bye")
 
+
 ;; Lokale Bindung mit let
 
 ; let ---------------------------------------------------------------------------
 
-(def x 42)
+(def x1 42)
 
-x
+x1
 
-(let [x 43] x)
+(let [x1 43] x1)
 
-x
+x1
 
-(let [x 43]
-  (println "erste Ebene" x)
-  (let [x 44] (println "zweite Ebene" x))
-  (println "wieder zurück" x))  
+(let [x1 43]
+  (println "erste Ebene" x1)
+  (let [x1 44] (println "zweite Ebene" x1))
+  (println "wieder zurück" x1))  
 
-x
+x1
 
 ;; Beispiel
 ; Berechnung der Nullstellen von f(x) = x^2 + px + q
@@ -570,7 +595,7 @@ x
 (pres "
 #Threading Macros
 
-- Ausdrücke muss man in LISP immer von innen nach Außen lesen.
+- Ausdrücke muss man in LISP immer von innen nach außen lesen.
 - Das kann mühsam sein:        
 
         (dec (/ (+ 5 3) 2))
@@ -588,7 +613,7 @@ x
         (some->> ...)
         (cond-> ...)          
  
-- siehe [Threading Macros Guide] (https://clojure.org/guides/threading_macros)
+- siehe [Threading Macros Guide](https://clojure.org/guides/threading_macros)
 ")
 
 (dec (/ (+ 5 3) 2))
@@ -702,17 +727,17 @@ Reine Funktionen . . .
 
 ##Kombination und Abstrakton
 
-> A powerful programming language is more than just a means for instructing 
+A powerful programming language is more than just a means for instructing 
   a computer to perform tasks. The language also serves as a framework within 
   which we organize our ideas about processes. [...] 
   
-> Every powerful language has three mechanisms for accomplishing this:
+Every powerful language has three mechanisms for accomplishing this:
 
->  - **primitive expressions**, which represent the simplest entities the language is concerned with,
->  - **means of combination**, by which compound elements are built from simpler ones, and
->  - **means of abstraction**, by which compound elements can be named and manipulated as units
+- **primitive expressions**, which represent the simplest entities the language is concerned with,
+- **means of combination**, by which compound elements are built from simpler ones, and
+- **means of abstraction**, by which compound elements can be named and manipulated as units
 
->  Harold Abelson, Gerald J Sussman
+(Harold Abelson, Gerald J Sussman: _Structure and Intewrpretation of Computer Programs_)
 ")
 
 ; eval und apply --------------------------------------------------------------------------------
@@ -727,14 +752,12 @@ Reine Funktionen . . .
 - Eine Liste `(fn a1 a2 ...)` wird ausgewertet, indem    
     - das erste Symbol ausgewertet wird (was eine Funktion ergeben muss)
     - die Argumente ausgewertet werden
-    - dann die Funktion auf die Argumente angewandt wird ( _apply_ )
-- Die Funktion `apply` von Clojure wendet eine Funktion auf eine Kollektion an, 
+    - dann die Funktion auf die Argumente angewandt wird ( nennt man im LISP-Jargon auch _apply_ )
+- Davon unterschieden: Die Funktion `apply` von Clojure wendet eine Funktion auf eine Kollektion an, 
   indem sie die Elemente als Argumente nimmt
 ")
 
 (def data '(let [a 10] (+ (* a 2) (* (inc a) 2)))) 
-
-
 ; data ist eine Liste von Listen
 
 data
