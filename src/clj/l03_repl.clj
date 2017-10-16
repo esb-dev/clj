@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 3
 ; Interaktive Entwicklung in der REPL und das Substitutionsmodell
-; (c) 2013 - 2015 by Burkhardt Renz, THM
+; (c) 2013 - 2017 by Burkhardt Renz, THM
 
 (ns clj.l03-repl
   (:require [clj.presentation :refer :all])
@@ -15,7 +15,7 @@ stop
 (pres :add "
 #Die REPL - Read-Evaluate-Print-Loop
  
-![Die REPL Ablauf] (resources/repl.jpg)
+![Die REPL Ablauf](resources/repl.jpg)
 ")
 
 ; wir starten eine REPL und sehen, was man da alles Hilfreiches hat
@@ -26,6 +26,7 @@ stop
 (source read)
 
 (find-doc "eval")
+; findet alle docs in den "eval" vorkommt
 
 (doc eval)
 
@@ -48,13 +49,12 @@ stop
 (pres :add "
 # Literale
 
----------- | -----------
-Strings    | umrahmt von doppelten Anführungszeichen, wie in Java `\"Hello World!\"`
-Characters | beginnen mit einem Backslash `\\a`, `\\tab`, `\\00e4` für `ä` 
-Boolean    | true oder false 
-nil        | nil steht für null in Java, in logischen Ausdrücken für false
-Zahlen     | beginnen mit optional + oder - oder einer Ziffer ...
-Keywords   | beginnen mit :, können zu einem Namensraum gehören
+- Strings    : umrahmt von doppelten Anführungszeichen, wie in Java `\"Hello World!\"`
+- Characters : beginnen mit einem Backslash `\\a`, `\\tab`, `\\00e4` für `ä` 
+- Boolean    : true oder false 
+- nil        : nil steht für null in Java, in logischen Ausdrücken für false
+- Zahlen     : beginnen mit optional + oder - oder einer Ziffer ...
+- Keywords   : beginnen mit :, können zu einem Namensraum gehören
 
 ")
 
@@ -80,12 +80,18 @@ true
 false
 
 (boolean false)
+(boolean (Boolean/FALSE))
 
 nil
 
 (boolean nil)
 
 (boolean "foo")
+
+; boolean false, nil, (Boolean/FALSE) => false
+;         alles andere => true
+
+(doc boolean)
 
 (doc true?)
 
@@ -107,26 +113,35 @@ nil
 ; Zahlen
 
 (class 42)
+; => java.lang.Long
 
 (class 42N)
+; => clojure.lang.BigInt
 
 (class 3.14)
+; => java.lang.Double
 
 (class 3.14M)
+; => java.math.BigDecimal
 
 (/ 22 7)
 
 (class 22/7)
+; => clojure.lang.Ratio
 
 ; Keywords
 (class :name)
-(namespace :name)
+; => clojure.lang.Keyword
 
-(class :user/location)
+(namespace :name)
+; => nil
+
 (namespace :user/location)
+; => "user"
 
 (class ::location)
 (namespace ::location)
+; => "clj.l03-repl"
 
 ; -------------------------------------------------------------------------------------------------
 ; Symbols
@@ -148,16 +163,18 @@ nil
 
 symbol
 
-(symbol? s)
-; Das Symbol s wird versucht auszuwerten, das geht aber nicht
+(symbol? s1)
+; Das Symbol s1 wird versucht auszuwerten, das geht aber nicht
 
-(def s)
+(def s1)
 
-s
+s1
 
-(def s 1)
+(def s1 1)
 
-(def s "hallo")
+s1
+
+(def s1 "hallo")
 ; kann man in der REPL nochmals tun, sonst sollte man die so erzeugte Var
 ; als 'dynamic' kennzeichnen
 
@@ -175,10 +192,10 @@ s
 )
   
 
-(symbol? s)
+(symbol? s1)
 ; false -- warum? s wird ausgewertet
 
-(symbol? 's)
+(symbol? 's1)
 ; true -- quote verhindert die Auswertung
 
 ; -------------------------------------------------------------------------------------------------
@@ -187,16 +204,15 @@ s
 (pres "
 #Kollektionen - und wie man sie literal schreibt
 
--------- | ----------
-Listen   | sind umklammerte forms
-         | (1 2 3 4 5), die leere Liste: ()
-Vektoren | sind eckig umklammerte forms
-         | [1 2 3], [1 [1 2] 2], [1 \"hallo\"]
-Maps     | sind geschweift umklammerte forms, in gerader Anzahl
-         | jeweils interpretiert als Key und Value
-         | {:monday 1, :tuesday 2, ...}
-Mengen   | beginnen mit #{ folgend die Elemente und schließen mit } ab
-         | #{1 2 3}
+Listen   : sind umklammerte forms
+         (1 2 3 4 5), die leere Liste: ()
+Vektoren : sind eckig umklammerte forms
+         [1 2 3], [1 [1 2] 2], [1 \"hallo\"]
+Maps     : sind geschweift umklammerte forms, in gerader Anzahl
+         jeweils interpretiert als Key und Value
+         {:monday 1, :tuesday 2, ...}
+Mengen   : beginnen mit #{ folgend die Elemente und schließen mit } ab
+          #{1 2 3}
 
 ")
 
@@ -213,10 +229,9 @@ Mengen   | beginnen mit #{ folgend die Elemente und schließen mit } ab
 [1 [1 2] 3]
 
 [1 , "hallo"]
+; , ist "white-space"
 
 {:monday 1, :tuesday 2, :wednesday 3, :thursday 4, :friday 5}
-
-{:monday 1 :tuesday 2, :wednesday 3, :thursday 4, :friday 5}
 
 {"Montag" 1 "Dienstag" 2}
 
@@ -231,14 +246,15 @@ Mengen   | beginnen mit #{ folgend die Elemente und schließen mit } ab
 
 (class #{1 2 3})
 
-(def m #{1 2})
-(conj m 1)
+(def menge #{1 2})
+(conj menge  1)
+; erlaubt
 
-(conj m 3)
+(conj menge  3)
 
-m
-(disj m 1)
-(disj m 3)
+menge  
+(disj menge  1)
+(disj menge  3)
 
 ; -------------------------------------------------------------------------------------------------
 ; Makrozeichen
@@ -246,18 +262,23 @@ m
 (pres "
 #Makrozeichen für den Reader
 
--------- | ----------
-`'`      | zitiert form und verhindert so die Auswertung 
-         | `'(+ 2 3) → (quote (+ 2 3))` 
-`;`      | Kommentar bis zum Zeilenende
-`#_`     | Ignoriere die nächste form
-`@`      | Deref von Referenzen in Clojure, ref, var, atom, agent etc
-`^`      | Metadaten, auch für Typinformationen für Java
-`#\"pattern\"`| Reguläre Ausdrücke, z.B. `#\"[0-9]+\"`
-`#’`     | Var-Objekt zu einem Symbol
-         | `#’x → (var x)` 
-`#(...)` | Kurzform zum Erzeugen einfacher anonymer Funktionen
-`‘, ~, ~@` | gebraucht für die Makroprogrammierung
+`'`      : zitiert form und verhindert so die Auswertung 
+         `'(+ 2 3) → (quote (+ 2 3))` 
+`;`      : Kommentar bis zum Zeilenende
+
+`#_`     : Ignoriere die nächste form
+
+`@`      : Deref von Referenzen in Clojure, ref, var, atom, agent etc
+
+`^`      : Metadaten, auch für Typinformationen für Java
+
+`#\"pattern\"`: Reguläre Ausdrücke, z.B. `#\"[0-9]+\"`
+
+`#’`     : Var-Objekt zu einem Symbol
+         `#’x → (var x)` 
+`#(...)` : Kurzform zum Erzeugen einfacher anonymer Funktionen
+
+`‘, ~, ~@` : gebraucht für die Makroprogrammierung
 
 ")
 
@@ -287,25 +308,26 @@ kontoA
 
 ; Metadaten ---
 
-(def v ^"Mein Vektor" [1 2 3])
+(def v1 ^"Mein Vektor" [1 2 3])
 ; ergibt meta mit key :tag
-
-v
-
-(meta v)
-
-(def v1 ^{:name "Mein Vektor"} [1 2 3])
-; ergibt meta wie angegeben
 
 v1
 
 (meta v1)
+
+(def v2 ^{:name "Mein Vektor"} [1 2 3])
+; ergibt meta wie angegeben
+
+v2
+
+(meta v2)
 
 ; Reguläre Ausdrücke
 
 (re-seq #"[0-9]+" "Dieser String enthält die Zahlen 123 und 456")
 
 (class #"[0-9]+")
+; => java.util.regex.Pattern
 ; pattern vom Reader erzeugt
 
 (class (re-pattern "[0-9]+"))
@@ -315,15 +337,15 @@ v1
 
 (doc var)
 
-(def x 12)
+(def x1 42)
 
-x
+x1
 
-(var x)
+(var x1)
 
-#'x
+#'x1
 
-(meta (var x))
+(meta (var x1))
 
 (meta (var meta))
 
@@ -338,7 +360,6 @@ x
 (map (fn [x] (* x x)) [1 2 3])
 
 (filter #(= 0 (mod % 3)) [1 2 3 4 5 6 7 8 9])
-
 
 ; -------------------------------------------------------------------------------------------------
 ; Extensible Reader
@@ -359,6 +380,7 @@ x
 ")
 
 (class #uuid "f81d4fae-7dec-11d0-a765-00a0c91e6bf6")
+; => java.util.UUID
 
 (pres "
 #Reader Conditionals
@@ -395,7 +417,7 @@ Beispiele aus der Dokumentation von Clojure:
 Evaluationsregeln ausgewertet (Substitutionsmodell)
 ")
 
-1
+42
 
 "Hallo"
 
@@ -470,6 +492,7 @@ java.lang.Math/PI
 
 (macroexpand-1 '(or (= 1 1) (= 1 2)))
 ; or ist ein macro
+; warum?
 
 (doc or)
 
@@ -484,6 +507,8 @@ java.lang.Math/PI
 ; das erste Element der Liste muss eine Funktion, ein Makro oder eine special form sein
 
 (doc if)
+; special form
+; warum?
 
 ; -------------------------------------------------------------------------------------------------
 ; special forms
@@ -494,40 +519,51 @@ java.lang.Math/PI
 Könnte nicht einfach _alles_ eine Funktion oder ein Makro sein? 
 
 `(def symb 42)`   
+
 Welches Problem tritt nach den Evaluierungsregeln auf?
 
 
 ⇒ def ist eine _special form_, oder auch ein _primitives Element_ von Clojure.
 ")
 
+; (def symb 42) könnte nach den Evaluierungsregeln nicht funktionieren, weil
+; symb ja ausgewertet werden würde, aber hier erst definiert werden soll
+
 (pres :add "
 # Welche _special forms_ gibt es in Clojure?
 
---------- | -----------
-`(def symbol init?)` | erzeugt eine var und gibt ihr einen Namen
-`(if test then else?)` | wertet test aus und verfährt entsprechend
-`(do exprs*)` | wertet Ausdrücke der Reihe nach aus und gibt den Wert des letzten zurück
-`(let [bindings*] exprs*)` | bindet Werte an Symbole und verwendet sie in Ausdrücken 
-                           | `(let [x 1, y x] y) -> 1`
-`(quote form)` | ergibt die form ohne dass sie ausgewertet wird
-`(var symbol)` | ergibt das Var-Objekt, nicht seinen Wert
-`(fn name? [params*] exprs*)`  |  erzeugt eine Funktion
-`(fn name? ([params*] exprs*)+)` | erzeugt eine Funktion mit Überladungen 
-`(loop [bindings*] exprs)` | wie let aber Ansprungpunkt für recur
-`(recur exprs*)` | end-rekursiver Aufruf
+`(def symbol init?)` : erzeugt eine var und gibt ihr einen Namen
+
+`(if test then else?)` : wertet test aus und verfährt entsprechend
+
+`(do exprs*)` : wertet Ausdrücke der Reihe nach aus und gibt den Wert des letzten zurück
+
+`(let [bindings*] exprs*)` : bindet Werte an Symbole und verwendet sie in Ausdrücken 
+                            `(let [x 1, y x] y) -> 1`
+`(quote form)` : ergibt die form ohne dass sie ausgewertet wird
+
+`(var symbol)` : ergibt das Var-Objekt, nicht seinen Wert
+
+`(fn name? [params*] exprs*)`  : erzeugt eine Funktion
+
+`(fn name? ([params*] exprs*)+)` : erzeugt eine Funktion mit Überladungen 
+
+`(loop [bindings*] exprs)` : wie let aber Ansprungpunkt für recur
+
+`(recur exprs*)` : end-rekursiver Aufruf
 
 ")
 
-(def s 12)
+(def s1 42)
 
 ; if
 (if (< 2 3) "kleiner" "größer") 
 
 (def kleiner (fn [x y] (if (< x y) "kleiner" "größer"))) 
 
-(kleiner 5 4)
+(kleiner 42 4)
 
-(kleiner 5 "x")
+(kleiner 42 "x")
 
 ; do
 (do 
@@ -541,20 +577,19 @@ Welches Problem tritt nach den Evaluierungsregeln auf?
   (println "zweiter Schritt"))
 ; hat Seiteneffekte
 
-
 ; let
-(def x 3)
+(def x1 42)
 
-(let [x 1
-      y x]
+(let [x1 1
+      y x1]
      y)
 
-x
+x1
 
-(let [x 1
-      y x]
+(let [x1 1
+      y x1]
      (do
-       (println x)
+       (println x1)
        y))
 
 ; quote
@@ -567,12 +602,13 @@ x
 '(1 2 3)
 
 '(1 (1 2) 3)
+; wirkt für alle Teile!
 
 ; var
 
-(var x)
+(var x1)
 
-#'x
+#'x1
 
 ; fn
 
@@ -604,15 +640,17 @@ x
 (pres "
 # _Special forms_ für die Java-Interoperabilität
 
---------- | ---------
-`(throw expr)` | expr wird ausgewertet (`Throwable`!) und geworfen
-`(try expr* catch* finally)` | Try-Catch-Block
-`(. obj method args*)` | Java Methodenaufruf
-`(. Class func args*)` |    
-`(Class/func args*)`   | Java statische Funktion einer Klasse
-`(new Class args*)`    |
-`(Class. args*)`       | Konstruktoraufruf
-`(set! (.obj field) expr)` | setzt Wert einer Objektvariable
+`(throw expr)` : expr wird ausgewertet (`Throwable`!) und geworfen
+
+`(try expr* catch* finally)` : Try-Catch-Block
+
+`(. obj method args*)` : Java Methodenaufruf
+
+`(. Class func args*)` oder `(Class/func args*)` : Java statische Funktion einer Klasse
+
+`(new Class args*)` oder `(Class. args*)` : Konstruktoraufruf
+
+`(set! (.obj field) expr)` : setzt Wert einer Objektvariable
 
 ")
 
