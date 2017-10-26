@@ -3,7 +3,7 @@
   :url "http://homespages.mni.thm.de/~hg11260"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.9.0-beta2"]
+  :dependencies [[org.clojure/clojure "1.9.0-beta3"]
                  [org.clojure/spec.alpha "0.1.134"]
                  [org.clojure/core.async "0.3.443"]
                  [org.clojure/core.logic "0.8.11"]

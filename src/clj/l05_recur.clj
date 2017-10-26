@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 5
 ; Rekursion
-; (c) 2013 - 2015 by Burkhardt Renz, THM
+; (c) 2013 - 2017 by Burkhardt Renz, THM
 
 (ns clj.l05-recur
   (:require [clj.presentation :refer :all])
@@ -16,7 +16,7 @@ stop
 # Die Fakultätsfunktion
 
 
-![Definition Fakultät] (resources/fac.jpg)
+![Definition Fakultät](resources/fac.jpg)
 
 
 ")
@@ -153,7 +153,7 @@ Setzen wir das mal um:
 Warum ist das Problem nicht verschwunden?
 
 - Es gibt Compiler und Laufzeitsysteme (z.B. für Scheme), die automatische
-Erkennung von Endrekursion haben, sogenannte _tail call optimization_.
+ Erkennung von Endrekursion haben, sogenannte _tail call optimization_.
 - Die JVM kann das nicht.
 - Nun könnte der Clojure-Compiler trotzdem Endrekursion erzeugen.
 - Beim Design von Clojure hat sich Rich Hickey entschieden, ein eigenes
@@ -216,12 +216,12 @@ Es geht aber auch noch ganz anders:
 (time
   (dotimes [_ 10000]
     (factorial 100)))
-; => 85 msecs
+; => 77 msecs
 
 (time
   (dotimes [_ 10000]
     (fac4 100)))
-; => 69 msecs
+; => 63 msecs
 
 
 ; Wechselseitige Rekursion -------------------------------

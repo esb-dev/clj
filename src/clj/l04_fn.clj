@@ -94,6 +94,8 @@ In Clojure kann man Funktionen definieren:
 
 (power 2 3)
 
+(doc power)
+
 (def pow-base2 (partial power 2))
 
 (doc partial)
@@ -136,7 +138,7 @@ Eine Funktion höherer Ordnung ist eine Funktion, die
 (defn sum-str [& numbers]
 	(str (apply + numbers)))
 ; sum-str verwendet apply und der erste Parameter von
-; apply ist eine Funktiion, nämlich +
+; apply ist eine Funktion, nämlich +
 
 (sum-str 1 2 3 4 5)
 
@@ -164,7 +166,7 @@ Eine Funktion höherer Ordnung ist eine Funktion, die
 ; Funktion, die Funktion erzeugt, die Wort auf seinen ersten Buchstaben testet
 (defn check-word
   "check-word takes a prefix and returns a predicate 
-  that checks a string whether it begins with that letter"
+  that checks a string whether it begins with that prefix"
   [p]
   (fn [s] (.startsWith s p)))
 
@@ -345,6 +347,10 @@ countif
 (take 10 (iterate #(* 2 %) 2))
 
 (take 10 (iterate #(+ 7 %) 7))
+
+(defn volksschule 
+  [n] (take 10 (iterate #(+ n %) n)))
+(volksschule 29)
 
 (doc iterate)
 
@@ -612,9 +618,20 @@ x1
         (some-> ...)
         (some->> ...)
         (cond-> ...)          
+        (cond->> ...)          
  
 - siehe [Threading Macros Guide](https://clojure.org/guides/threading_macros)
 ")
+
+; (-> x f1 f2 ...)  x ist erstes Argument von f1, das Ergebnis das erste von f2 usw.
+; (->> x f1 f2 ...) x ist letztes Argument von f1, das Ergebnis das zweite von f2 usw.
+; (as-> x b f1 f2 ...) x ist das Argument von f1 an der Stelle, wo b steht, das Ergebnis in f2 wo b steht usw.
+; (some-> x f1 f2 ...) wie -> hört aber mit nil auf (ohne Exception), wenn ein Ausdruck der Kette nil wird
+; (some->> x f1 f2 ...) wie ->> aber bricht ab bei nil
+; (cond-> x (test1) (expr1) (test2) (expr2) ....) gibt x in test1 als erstes Argument und wertet dementsprechend evtl.
+;                                                 expr1 aus usw.
+; (cond->> x ....) analog aber x als letztes Argument in den Tests
+
 
 (dec (/ (+ 5 3) 2))
 ; => 3
@@ -737,17 +754,17 @@ Every powerful language has three mechanisms for accomplishing this:
 - **means of combination**, by which compound elements are built from simpler ones, and
 - **means of abstraction**, by which compound elements can be named and manipulated as units
 
-(Harold Abelson, Gerald J Sussman: _Structure and Intewrpretation of Computer Programs_)
+(Harold Abelson, Gerald J Sussman: _Structure and Interpretation of Computer Programs_)
 ")
 
 ; eval und apply --------------------------------------------------------------------------------
 (pres "
-#Funktionale Prinizipien
+#Funktionale Prinzipien
 
 ##_eval_ und _apply_
 
 - Daten = Code ( _Homoikonizität_ )
-- `eval` verwendet Daten wie Code    
+- `eval` verwendet Daten wie Code    --
   eine REPL kann man im Prinzip in Clojure selbst mit `eval` schreiben
 - Eine Liste `(fn a1 a2 ...)` wird ausgewertet, indem    
     - das erste Symbol ausgewertet wird (was eine Funktion ergeben muss)

@@ -161,7 +161,7 @@ nil
 
 ")
 
-symbol
+symbol?
 
 (symbol? s1)
 ; Das Symbol s1 wird versucht auszuwerten, das geht aber nicht
@@ -414,7 +414,7 @@ Beispiele aus der Dokumentation von Clojure:
 
 - Alle Ausdrücke evaluieren zu sich selbst mit Ausnahme von Symbolen und Listen.
 - Wenn Ausdrücke andere Ausdrücke enthalten, werden diese nach den 
-Evaluationsregeln ausgewertet (Substitutionsmodell)
+ Evaluationsregeln ausgewertet (Substitutionsmodell)
 ")
 
 42
@@ -557,13 +557,14 @@ Welches Problem tritt nach den Evaluierungsregeln auf?
 (def s1 42)
 
 ; if
-(if (< 2 3) "kleiner" "größer") 
+(if (< 2 3) 
+  (do (println "if-Zweig") "kleiner") 
+  (do (println "else-Zweig")"größer"))
 
-(def kleiner (fn [x y] (if (< x y) "kleiner" "größer"))) 
-
-(kleiner 42 4)
-
-(kleiner 42 "x")
+(if (< 3 2) 
+  (do (println "if-Zweig") "kleiner") 
+  (do (println "else-Zweig")"größer")) 
+; nur der "relevante" Zweig wird ausgewertet
 
 ; do
 (do 
