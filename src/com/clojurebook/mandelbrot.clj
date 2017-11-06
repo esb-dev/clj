@@ -142,9 +142,9 @@
 
 (time 
   (dotimes [_ 100] (mandelbrot -2.25 0.75 -1.5 1.5 :width 80 :height 40 :depth 100)))
-; => "Elapsed time: 312 msecs"
+; => "Elapsed time: 204 msecs"
 
 (time 
   (dotimes [_ 100] (with-redefs [escape fast-escape]
                     (mandelbrot -2.25 0.75 -1.5 1.5 :width 80 :height 40 :depth 100))))
-; => "Elapsed time: 70 msecs"
+; => "Elapsed time: 60 msecs"
