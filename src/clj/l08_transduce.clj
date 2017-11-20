@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 8
 ; Reducers and Transducers
-; (c) 2014 - 2015 by Burkhardt Renz, THM
+; (c) 2014 - 2017 by Burkhardt Renz, THM
 
 (ns clj.l08-transduce
   (:require [clj.presentation :refer :all])
@@ -94,7 +94,7 @@ dann `reduce`")
 (time
   (dotimes [_ 100]
     (idiomatic coll)))
-;=> 3843 msecs
+;=> 3843 msecs -- langsamer
 
 
 (pres :add "
@@ -129,7 +129,7 @@ die beim `reduce` verwendet wird.
 
 ; Wie man sieht kostet die Allokation von Folgen in den Zwischenschritten Zeit!
 
-; Genau das hat vor zwei, drei Jahren in Clojure 1.5 zu den Reducern geführt
+; Genau das hat vor in Clojure 1.5 zu den Reducern geführt
 
 (pres "
 # Reducers
@@ -150,7 +150,7 @@ aus der Dokumentation von Clojure:
 ")
 
 ; Verwenden wir die mal
-; Lade clojure.string, Zugriff mit alias str
+; Lade clojure.core.reducers, Zugriff mit alias r
 (require '(clojure.core [reducers :as r]))
 
 (defn reducers [coll]
@@ -179,12 +179,12 @@ aus der Dokumentation von Clojure:
 (pres :add "
 und weiter:
   
-> In general most users will not call `r/reduce` directly and instead should 
-  prefer `r/fold`, which implements parallel reduce and combine.
+> In general most users will not call `r/reduce` directly and instead 
+  should prefer `r/fold`, which implements parallel reduce and combine.
   
 Hinweis zur Anwendung von _reducers_:
 
-> **When to use**    
+> *When to use*    
   Use the reducer form of these operations when:     
   
 > - Source data can be generated and held in memory
@@ -204,11 +204,11 @@ Unsere Funktionen wie `map`, `filter` etc arbeiten nur mit Folgen bzw. Kollektio
 Bei der Entwicklung von ClojureScript hat es sich gezeigt, dass man diese ganzen
 Funktionen neu implementieren muss, wenn man einen anderen Lieferanten der zu
 verarbeitenden Daten hat: keine Kollektion, sondern z.B. einen Kanal
-(Wir werden Kanäle mit _core.async_ auch noch kennenlernen)
+(Kanäle werden mit _core.async_ verwendet)
 
-**Idee:** Trenne die Transformation der Daten von ihrer Herkunft und von ihrem Zielort
+*Idee:* Trenne die Transformation der Daten von ihrer Herkunft und von ihrem Zielort
 
-auf die Bühne: **_Transducers_**
+auf die Bühne: *_Transducers_*
 
 ")
 
@@ -251,7 +251,6 @@ auf die Bühne: **_Transducers_**
 
 (take 5 s)
 
-
 (pres "
 # Idee von _Transducers_
 
@@ -272,11 +271,11 @@ und _transducible context_).
 
 Aus einer Präsentation von Rich Hickey:
 
-> - reduce     
+- reduce     
   'lead back' (zurückführen)
-  - ingest    
+- ingest    
   'carry into' (aufnehmen)
-  - transduce    
+- transduce    
   'lead across' (überführen)
 ")
 
@@ -317,9 +316,9 @@ Was macht `reduce'?
 
 ⇒ Ein _Transformer_  besteht aus 3 Funktionen:     
 
-  - `init [] -> res`     
-  - `step [res, item] -> res`  _step function_
-  - `complete [res] -> res`
+- `init [] -> res`     
+- `step [res, item] -> res`  _step function_
+- `complete [res] -> res`
 
 ⇒ Ein _Transducer_ ist eine Funktion, die _Transformer_ transformiert!
 ")
@@ -332,7 +331,7 @@ Was macht `reduce'?
           (fn
             ([] (transformer))
             ([res item] (transformer res (f item)))
-            ([res] (transformer result)))))
+            ([res] (transformer res)))))
 ")
 
 (pres :add "
@@ -344,7 +343,7 @@ Was macht `reduce'?
             ([] (transformer))
             ([res item] 
               (if (pred item) (transformer res item) res))
-            ([res] (transformer result)))))
+            ([res] (transformer res)))))
 ")
 
 (pres "
@@ -390,6 +389,7 @@ Parameter:
 ; => 9
 
 (xf 12 3)
+; => 21 = 12 + 9
 
 (let [xf (xform +)]
   (reduce xf 0 coll))
@@ -397,12 +397,11 @@ Parameter:
 (pres "
 # In welchem Kontext kann man Transducer anwenden?
 
----------------- | -----------------------
-`transduce`      | Reduktion mit Transducer
-`into`           | Transformation in andere Kollektion (strikt)
-`sequence`       | Verzögerte Folge des Ergebnisses
-`eduction`       | Eine Kollektion zusammen mit einer Transformation, die noch nicht ausgeführt wurde - der Verwender kann sie auswerten
-channel          | Kanal von `core.async`                   
+- `transduce`  Reduktion mit Transducer
+- `into`       Transformation in andere Kollektion (strikt)
+- `sequence`   Verzögerte Folge des Ergebnisses
+- `eduction`   Eine Kollektion zusammen mit einer Transformation, die noch nicht ausgeführt wurde - der Verwender kann sie auswerten
+- channel      Kanal von `core.async`                   
 
 ")
 
