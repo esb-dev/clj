@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 6
 ; Einfache und zusammengesetzte Datentypen
-; (c) 2014 - 2015 by Burkhardt Renz, THM
+; (c) 2014 - 2017 by Burkhardt Renz, THM
 
 (ns clj.l06-dt
   (:require [clj.presentation :refer :all])
@@ -79,7 +79,7 @@ stop
 - double (64-bit): ` 3.14, 0.271e1`
 - clojure.lang.BigInt: `42N`
 - java.math.BigDecimal: `2.71M`
-- clojure.lamg.Ratio: `22/7`
+- clojure.lang.Ratio: `22/7`
 ")
 
 (= 42 0x2a)
@@ -889,7 +889,7 @@ s1
 
 ; Destructuring --------------------------------------
 (pres"
-# Zerlegende Variablenbindung ( _destructuring_ )
+# Zerlegende Parameterbindung ( _destructuring_ )
 
 - Es gibt oft Situationen, in denen Werte zusammengesetzter Datenstrukturen 
   als Parameter von Funktionen auftreten
@@ -956,7 +956,7 @@ vt
 
 ; Zerlegung bei der Definition variadischer Funktionen
 
-(defn concat-rest [x & more]
+(defn concat-rest [_ & more]
   (apply str more))
 
 (concat-rest 0 1 2 3)

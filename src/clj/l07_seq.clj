@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 7
 ; Kollektionen und Folgen (sequences)
-; (c) 2014 - 2015 by Burkhardt Renz, THM
+; (c) 2014 - 2017 by Burkhardt Renz, THM
 
 (ns clj.l07-seq
   (:require [clj.presentation :refer :all])
@@ -68,11 +68,10 @@ alle solche Datenstrukturen sind _seqable_.
 (pres "
 #Das _Seq_ Interface
 
----------- | ------------
-`(first coll)` | Erstes Element der Kollektion
-`(rest coll)`  | Rest der Kollektion als Folge, eventuell leer
-`(next coll)`  | wertet erstes Element des Rests aus
-`(cons item seq)` | Folge mit `item` als erstem Element und `seq` als Rest
+- `(first coll)` Erstes Element der Kollektion
+- `(rest coll)`  Rest der Kollektion als Folge, eventuell leer
+- `(next coll)`  wertet erstes Element des Rests aus
+- `(cons item seq)` Folge mit `item` als erstem Element und `seq` als Rest
 
 ")
 
@@ -80,38 +79,39 @@ alle solche Datenstrukturen sind _seqable_.
 ; => 1
 
 (rest '(1 2 3 4))
-;=> (2 3 4)
+; => (2 3 4)
 
 (next '(1 2 3 4))
-; => ( 2 3 4)
+; => (2 3 4)
 
 (first '[1 2 3 4])
 ; => 1
 
 (rest '[1 2 3 4])
-;=> (2 3 4)
+; => (2 3 4) -- eine seq!
 
 (first {:a 1 :b 2 :c 3})
-;=> [:a 1]
+; => [:a 1]
 
 (rest {:a 1 :b 2 :c 3})
-;=> ([:b 2] [:c 3])
+; => ([:b 2] [:c 3])
 
-(def s (seq [1 2 3]))
+(def s1 (seq [1 2 3]))
 
-(def s' (cons 0 s))
+(def s1' (cons 0 s1))
 
-s
+s1 
 
-s'
+s1'
 
-(class s)
+(class s1)
 ;=> clojure.lang.PersistentVector$ChunkedSeq
 
-(class s')
+(class s1')
 ; => clojure.lang.Cons
+; nicht gerade konsistent!
 
-(class (seq s'))
+(class (seq s1'))
 ; => immer noch clojure.lang.Cons
 ; Vorsicht mit cons bei Funktionen, die seq verwenden
 
@@ -142,10 +142,11 @@ s'
 
   Seqs haben eine gewisse Ähnlichkeit zu Iteratoren, haben aber ein funktionales Konzept.
   
-> ''Seqs differ from iterators in that they are persistent and immutable, not stateful 
-  cursors into a collection. As such, they are useful for much more than foreach - 
-  functions can consume and produce seqs, they are thread safe, they can share structure 
-  etc.''      
+> ''Seqs differ from iterators in that they are persistent 
+  and immutable, not stateful cursors into a collection. 
+  As such, they are useful for much more than foreach - 
+  functions can consume and produce seqs, they are 
+  thread safe, they can share structure etc.''      
   (Aus der Dokumentation von Clojure)
 ")
 
@@ -156,13 +157,13 @@ s'
 Das Konzept von Sequences kommt von LISP, dort aber ist die Sequence definiert auf einer
 konkreten Datenstruktur, der Liste.
 
-In Clojure ist die sequence ein logisches Konzept, das auf Basis verschiedener konkreter
+In Clojure ist die _sequence_ ein logisches Konzept, das auf Basis verschiedener konkreter
 Datenstrukturen funktioniert.
 
 >  ''A sequence is a sequential _view_ on a collection, it is not the collection itself.''   
   (Meikel Brandmeyer)
   
-In Clojure ist alles eine **Folge**  
+In Clojure ist alles eine _Folge_. 
 ")
 
 
@@ -172,7 +173,7 @@ In Clojure ist alles eine **Folge**
 ; => (1 2 3 4)
 
 (seq #{1 2 3 4})
-; => (1 2 3 4)
+; => (1 4 3 2)
 
 (seq {:a 1 :b 2 :c 3})
 ; => ([:a 1] [:c 3] [:b 2])
@@ -190,7 +191,6 @@ In Clojure ist alles eine **Folge**
 
 (seq [])
 ; => nil
-
 
 ; Ein Missverständnis -----------------
 (pres :add "
@@ -281,7 +281,6 @@ kann. Wird ein Element der Folge benötigt, dann wird diese Funktion aufgerufen
 ;  Returns a new seq where x is the first element and seq is
 ;    the rest. 
 
-;=> Vorsicht: dauert auf meinem neuen Mac sehr lange!!
 ;(random-ints 49)
 ;=> OutOfMemoryError Java heap space  java.util.Arrays.copyOf (:-1) 
 
@@ -333,8 +332,6 @@ kann. Wird ein Element der Folge benötigt, dann wird diese Funktion aufgerufen
 
 (doc range)
 
-(source range)
-
 ; repeat
 (repeat 5 "hallo")
 ; => ("hallo" "hallo" "hallo" "hallo" "hallo")
@@ -366,7 +363,6 @@ kann. Wird ein Element der Folge benötigt, dann wird diese Funktion aufgerufen
 ; join
 (str/join ", " ["MNI" "KMUB" "EW"])
 ; => "MNI, KMUB, EW"
-
 
 ; Folgen filtern ---------------------------------
 
@@ -415,6 +411,7 @@ kann. Wird ein Element der Folge benötigt, dann wird diese Funktion aufgerufen
 (some even? [1 3 5])
 ; => nil
 
+; Warum hat some kein ? am Ende?
 ; some ist nicht wirklich ein Prädikat, sondern liefert den ersten Wert,
 ; der nicht nil ist.
 ; bei even? ist das true!!
@@ -430,7 +427,6 @@ kann. Wird ein Element der Folge benötigt, dann wird diese Funktion aufgerufen
 ; not-any?
 (not-any? even? [1 3 5 7 8])
 ; => false
-
 
 ; Folgen transformieren -------------------------
 (pres "
@@ -583,6 +579,10 @@ p1
 ; => {:alter 26, :name "Schneider"} 
 
 (get p1 :name)
+; => "Schneider"
+
+; idomatisch
+(:name p1)
 ; => "Schneider"
 
 (contains? p1 :vorname)
