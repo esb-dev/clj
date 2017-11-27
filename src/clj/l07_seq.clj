@@ -42,7 +42,7 @@ Java
       
 Clojure
       
-      {:name \"Schneider\", :vorname \"Klaus\", gebdatum \"1993-05-06\"}
+      {:name \"Schneider\", :vorname \"Klaus\", :gebdatum \"1993-05-06\"}
   
 ")
 
@@ -309,8 +309,6 @@ kann. Wird ein Element der Folge benötigt, dann wird diese Funktion aufgerufen
 ;=> ich erzeuge eine Zufallszahl
 ;=> 24
 
-; eine Zufallszahl wurde erzeugt
-
 (nth rands 3)
 ;=> ich erzeuge eine Zufallszahl
 ;=> ich erzeuge eine Zufallszahl
@@ -355,14 +353,14 @@ kann. Wird ein Element der Folge benötigt, dann wird diese Funktion aufgerufen
 ; => (:a 1)
 
 ; interpose
-(interpose "," ["MNI" "KMUB" "EW"])
-; => ("MNI" "," "KMUB" "," "EW")
+(interpose "," ["MNI" "LSE" "EW"])
+; => ("MNI" "," "LSE" "," "EW")
 
 (require '(clojure [string :as str]))
 
 ; join
-(str/join ", " ["MNI" "KMUB" "EW"])
-; => "MNI, KMUB, EW"
+(str/join ", " ["MNI" "LSE" "EW"])
+; => "MNI, LSE, EW"
 
 ; Folgen filtern ---------------------------------
 
@@ -480,7 +478,6 @@ kann. Wird ein Element der Folge benötigt, dann wird diese Funktion aufgerufen
 
 ; mit Startwert
 (reduce + 1000 (map inc (filter even? (range 101))))
-
 
 ; reduce in Clojure ist ein left-fold, siehe oben
 ; bei kommutativen Operatoren spielt das keine Rolle, bei anderen

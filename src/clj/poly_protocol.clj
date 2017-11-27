@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 9
 ; Beispiel zu Protocols
-; (c) 2014 - 2015 by Burkhardt Renz, THM
+; (c) 2014 - 2017 by Burkhardt Renz, THM
 
 (ns clj.poly-protocol)
 

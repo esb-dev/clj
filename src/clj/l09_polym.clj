@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 9
 ; Polymorphismus - Multimethod und Protocol/Record
-; (c) 2014 - 2015 by Burkhardt Renz, THM
+; (c) 2014 - 2017 by Burkhardt Renz, THM
 
 (ns clj.l09-polym
   (:require [clj.presentation :refer :all])
@@ -31,7 +31,7 @@ stop
 - in Clojure:   
   Multimethods und Records/Protocols
   
-(Darstellung inspiriert durch eine [Präsentation] (http://www.infoq.com/presentations/Clojure-Expression-Problem)  
+(Darstellung inspiriert durch eine [Präsentation](http://www.infoq.com/presentations/Clojure-Expression-Problem)  
 von Chris Houser)
 ")
 
@@ -75,11 +75,11 @@ siehe `Kunde.java` und `poly.html` im Package `javapoly`
 (pres "
 # Das Erweiterungsproblem ( _expression problem_ )
 
-> ''The Expression Problem is a new name for an old problem. 
-  The goal is to define a datatype by cases, where one can add new cases 
-  to the datatype and new functions over the datatype, without recompiling 
-  existing code, and while retaining static type safety (e.g., no casts).''     
-  Philip Wadler 1998
+''The Expression Problem is a new name for an old problem. 
+The goal is to define a datatype by cases, where one can add new cases 
+to the datatype and new functions over the datatype, without recompiling 
+existing code, and while retaining static type safety (e.g., no casts).''     
+Philip Wadler 1998
 
 ## Aufgaben
 
@@ -88,10 +88,10 @@ siehe `Kunde.java` und `poly.html` im Package `javapoly`
 
 
 In objekt-orientierten Sprachen ist die erste Aufgabe einfach:   
-Man definiert die Funktionalität in einem Interface und der neue Type muss es erfüllen
+Man definiert die Funktionalität in einem Interface und der neue Typ muss es erfüllen.
 
 Die zweite Aufgabe jedoch ist aufwändig:    
-Erweitert man das Interface, muss man jede Klasse anpassen, die es erfüllen soll
+Erweitert man das Interface, muss man jede Klasse anpassen, die es erfüllen soll.
 ")
 
 ;------------------------------------------------------------------------
@@ -129,10 +129,10 @@ Erweitert man das Interface, muss man jede Klasse anpassen, die es erfüllen sol
 
 ## Ansatz 4: Monkey Patch
 
-> ''In Python, the term monkey patch only refers to dynamic modifications 
-  of a class or module at runtime, motivated by the intent to patch 
-  existing third-party code as a workaround to a bug or feature which 
-  does not act as desired.'' (Wikipedia)
+''In Python, the term monkey patch only refers to dynamic modifications 
+of a class or module at runtime, motivated by the intent to patch 
+existing third-party code as a workaround to a bug or feature which 
+does not act as desired.'' (Wikipedia)
   
 Also übertragen für Java etwas, was in Java syntaktisch nicht geht:
   
@@ -224,7 +224,7 @@ Also übertragen für Java etwas, was in Java syntaktisch nicht geht:
     - hat relativ hohen Laufzeitaufwand
 - _Records_ und _Protocols_
     - verwenden Mechanismus der Plattform mit Polymorphismus auf Basis des Typs von Objekten
-    - Objekte haben aber trotzdem Wertesemantik
+    - Objekte haben aber trotzdem Werte-Semantik
     - sind schneller als Multimethods
 - Von Maps zu Records
     - Hat man eine Funktion, die Maps aus Werten konstruiert, muss man nur diesen Konstruktor 

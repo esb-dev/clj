@@ -19,11 +19,11 @@ Was wollen wir tun?
 1. Wir nehmen einen recht großen Vektor von Zahlen
 2. Wir suchen uns die ungeraden dieser Zahlen heraus
 3. Diese Zahlen quadrieren wir
-4. und schließlich adieren wir das alles auf
+4. und schließlich addieren wir das alles auf
 
 (Die Idee zu dieser Einführung in das Thema _Reducers_ und _Transducers_ habe ich 
 aus einer Präsentation von Christoph Grand und Khalid Jebbari beim
-Paris Clojure Meetup: Historie de l'itération moderne: de la boucle for aux transducers)
+Paris Clojure Meetup: _Historie de l'itération moderne: de la boucle for aux transducers_)
 ")
 
 ; Wir definieren einen großen Vektor
@@ -141,10 +141,10 @@ aus der Dokumentation von Clojure:
 > reducing function (the ''recipe'' for what needs to be 
 > done during the reduction). 
 
-> The standard sequence 
-> operations are replaced with new versions that do not 
-> perform the operation but merely transform the reducing 
-> function. Execution of the operations is deferred until 
+> The standard sequence operations are replaced with new 
+> versions that do not perform the operation but merely 
+> transform the reducing function. 
+> Execution of the operations is deferred until 
 > the final reduction is performed. This removes the 
 > intermediate results and lazy evaluation seen with sequences.
 ")
@@ -187,9 +187,9 @@ Hinweis zur Anwendung von _reducers_:
 > *When to use*    
   Use the reducer form of these operations when:     
   
-> - Source data can be generated and held in memory
-  - Work to be performed is computation (not I/O or blocking)
-  - Number of data items or work to be done is ''large''
+- Source data can be generated and held in memory
+- Work to be performed is computation (not I/O or blocking)
+- Number of data items or work to be done is ''large''
   
 ")
 
@@ -265,8 +265,6 @@ die zu bearbeitenden Elemente kommen und wo sie weiterverwendet werden.
 wird von ihrem Kontext getrennt - und erst später wieder hinzugefügt: _Transducing functions_
 und _transducible context_).
 
-
-
 ## Zum Begriff _transducer_
 
 Aus einer Präsentation von Rich Hickey:
@@ -316,9 +314,9 @@ Was macht `reduce'?
 
 ⇒ Ein _Transformer_  besteht aus 3 Funktionen:     
 
-- `init [] -> res`     
-- `step [res, item] -> res`  _step function_
-- `complete [res] -> res`
+- `init [] -> result`     
+- `step [result, item] -> result`  _step function_
+- `complete [result] -> result`
 
 ⇒ Ein _Transducer_ ist eine Funktion, die _Transformer_ transformiert!
 ")
@@ -330,8 +328,8 @@ Was macht `reduce'?
         (fn [transformer]
           (fn
             ([] (transformer))
-            ([res item] (transformer res (f item)))
-            ([res] (transformer res)))))
+            ([result item] (transformer result (f item)))
+            ([result] (transformer result)))))
 ")
 
 (pres :add "
@@ -341,9 +339,9 @@ Was macht `reduce'?
         (fn [transformer]
           (fn
             ([] (transformer))
-            ([res item] 
-              (if (pred item) (transformer res item) res))
-            ([res] (transformer res)))))
+            ([result item] 
+              (if (pred item) (transformer result item) result))
+            ([result] (transformer result)))))
 ")
 
 (pres "
@@ -364,8 +362,8 @@ Parameter:
         ([xform f init coll]
           (let [xf (xform f) ;; eine Funktion mit 3 Varianten, 
                              ;; reduce verwendet step
-                res (reduce xf init coll)]
-            (xf res) ;; die complete-Variante von xf)))   
+                result (reduce xf init coll)]
+            (xf result) ;; die complete-Variante von xf)))   
 ")
 
 
