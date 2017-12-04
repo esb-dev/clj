@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 11  
 ; Interoperabilität mit Java
-; (c) 2014 - 2015 by Burkhardt Renz, THM
+; (c) 2014 - 2017 by Burkhardt Renz, THM
 
 (ns clj.l11-java-iop
   (:require [clj.presentation :refer :all])
@@ -260,7 +260,6 @@ pt
 
 ;; Guter Stil ist das Verwenden vorhandener Java-Exceptions
 
-
 (pres "
 # Clojure und Reflection in Java
 
@@ -285,7 +284,7 @@ pt
 
 (time (doseq [s (repeat 10000 "hallo")]
         (capitalize s)))
-; "Elapsed time: ca 100 msecs"
+; "Elapsed time: ca 150 msecs"
 
 ;; Ist langsam -- Clojure macht Reflection
 ;; charAt ist Methode von String und von StringBuffer und weiteren Klassen
@@ -318,7 +317,7 @@ pt
 
 (time (doseq [s (repeat 10000 "hallo")]
         (capitalize s)))
-; "Elapsed time: ca 6 msecs"
+; "Elapsed time: ca 8 msecs"
 ;; deutlich schneller
 
 ;; Man kann auch den Typ des Rückgabewerts angeben
