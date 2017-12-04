@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 10  
 ; Identität, Zustand und Synchronisationskontrolle
-; (c) 2014 - 2015 by Burkhardt Renz, THM
+; (c) 2014 - 2017 by Burkhardt Renz, THM
 
 (ns clj.l10-state
   (:require [clj.presentation :refer :all])
@@ -24,11 +24,14 @@ stop
 ")
 
 (pres "
-# Klassfikation von Referenztypen
+# Klassifikation von Referenztypen
 
 ![Referenztypen](resources/ref-types.jpg)
 
 ")
+
+; koordiniert = mehrere Zugriffe werden koordiniert
+; unkoordiniert = atomare Zugriffe
 
 (pres "
 # Synchronisationskontrolle
@@ -137,7 +140,7 @@ age
 ;trying 5
 ;=> nil
 
-;; Das führt dazu, dass f5 zweimal aufgerufen wird
+;; f5 wird zweimal aufgerufen wird
 ;; Warum?
 
 (pres "
@@ -239,6 +242,11 @@ age
 (deposit a1 20)
 ; => #clj.state.Account{:id "1", :balance 120}
 
+
+;; Beide Funktionen erzeugen _neues_ Objekt!
+(identical? a1 (deposit a1 20))
+; => false
+
 ;; Geld überweisen
 (defn transfer
   "Transfers an amount of money from one account to another"
@@ -246,7 +254,9 @@ age
   (alter from withdraw amount)
   (alter to deposit amount))
 
+; Zweites Konto
 (def a2 (Account. "2" 100))
+
 (transfer a1 a2 20)
 ; => ClassCastException clj.state.Account cannot be cast to clojure.lang.Ref
 ;; alter geht nur mit Refs und in einer Transaktion
@@ -257,6 +267,7 @@ age
 (account-info a1-ref)
   
 ;; Also brauchen wir Transaktionen für unseren beiden Refs von oben
+; Geld abheben
 (defn withdraw! [account amount ms]
   (dosync
     (do
@@ -265,6 +276,7 @@ age
       (alter account withdraw amount)
       (println (.getName (Thread/currentThread)) "tries to commit"))))
       
+; Geld überweisen
 (defn transfer! [from to amount ms]
   (dosync
     (do
@@ -274,6 +286,11 @@ age
       (println (.getName (Thread/currentThread)) "tries to commit"))))
       
 
+; Wir starten mit jeweils 100 pro Konto
+; t1: 100 von a1 auf a2 überweisen -> a1 = 0, a2 = 200
+; t2:  50 von a1 abziehen          -> a1 = 0, a2 = 150
+(dosync (ref-set a1-ref (Account. "1" 100)))
+(dosync (ref-set a2-ref (Account. "2" 100)))
 (let [t1 (Thread. #(transfer! a1-ref a2-ref 100 150) "Thread 1")
       t2 (Thread. #(withdraw! a2-ref 50 100) "Thread 2")]
   (.start t1)
@@ -317,11 +334,9 @@ age
       (account-info account)
       (println (.getName (Thread/currentThread)) "tries to commit"))))
 
-(dosync
-  (ref-set a1-ref (Account. "1" 100)))
+(dosync (ref-set a1-ref (Account. "1" 100)))
+(dosync (ref-set a2-ref (Account. "2" 100)))
 
-@a1-ref
-  
 (let [t1 (Thread. #(withdraw! a1-ref 20 100) "Thread 1")
       t2 (Thread. #(withdraw! a1-ref 30 100) "Thread 2")]
   (.start t1)
@@ -406,24 +421,24 @@ age
 ")
 
 ;; agent definiert einen agent
-(def a (agent 42))
+(def ag (agent 42))
 
 ;; ein agent
-a
+ag
 
 ;; sein Wert
-(deref a)
+(deref ag)
 ; => 42
-@a
+@ag
 ; => 42
 
 ;; Ändern des Werts eine Agents
 ;; die Funktion soll lange dauern
-(send a (fn [x] (dotimes [_ 10000000000] x) (inc x)))
-(deref a)
+(send ag (fn [x] (dotimes [_ 10000000000] x) (inc x)))
+(deref ag)
 ; => 42
 
-(deref a)
+(deref ag)
 ; => 43 -- etwas verzögert!
 
 
@@ -517,7 +532,7 @@ large-bucket
 
 (time 
   (println (decode-bucket large-bucket)))
-; => 4 sec oder so
+; => 5 sec oder so
 
 ;; nun verteilen auf  Agenten
 
@@ -561,7 +576,7 @@ work-buckets
 	  (apply await agents)
     (doseq [agent agents]
       (println @agent))))
-; => etwa 3 sec
+; => etwa 4 sec
 
 (pres "
 # Referenztyp 4: Vars
@@ -606,11 +621,11 @@ intim
 ; => 42
 
 ;; Dokumentation zu einer Var
-(def a
+(def uz
   "Die ultimative Zahl"
   42)
 
-(doc a)
+(doc uz)
 ; ------------------------
 ; clj.l10-state/a
 ; Die ultimative Zahl
@@ -655,22 +670,22 @@ Das bringt eine Beschleunigung."
 ")
 
 ;; Definition eines delays
-(def d (delay (println "Delay wird ausgeführt")
+(def de (delay (println "Delay wird ausgeführt")
               :fertig))
 
 ;; bereits ausgeführt?
-(realized? d)
+(realized? de)
 ; => false
 
 ;; Dereferenzieren
-@d
+@de
 ; Delay wird ausgeführt 
 ; => :fertig
 
-(realized? d)
+(realized? de)
 ; => true
 
-@d
+@de
 ; => :fertig
 ; Beim zweiten Aufruf wird println nicht mehr ausgeführt
 
@@ -715,23 +730,23 @@ Das bringt eine Beschleunigung."
 ")
 
 ;; Definition eines Promise
-(def p (promise))
+(def p1 (promise))
 
 ;; Wert gesetzt?
-(realized? p)
+(realized? p1)
 ; => false
 
 ;; Wert des Promise setzen
-(deliver p 42)
+(deliver p1 42)
 ; => #object[clojure.core$promise$reify__6779 0xcdeda6e {:status :ready, :val 42}]
 
 ;; Wert gesetzt?
-(realized? p)
+(realized? p1)
 ; => true
 
 ;; Dereferenzierung
-@p
-42
+@p1 
+; => 42
 
 ;; Beispiel für Datenfluss-Steuerung Clojure Programming S.164
 
@@ -774,5 +789,4 @@ Das bringt eine Beschleunigung."
   `locking` sowie `java.util.concurrent.*`
 - `core.async` für nebenläufige Aktivitäten, die über Kanäle kommunizieren    
   Programmiermodell à la Hoare's _Communicating Sequential Processes_    
-  dazu später mehr
 ")
