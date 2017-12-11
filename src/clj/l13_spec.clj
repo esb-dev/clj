@@ -1,6 +1,6 @@
 ; Programmierung in Clojure
 ; Spezifikationen mit clojure.spec
-; (c) 2016 by Burkhardt Renz, THM
+; (c) 2016 - 2017 by Burkhardt Renz, THM
 
 (ns clj.l13_spec
   (:require [clj.presentation :refer :all])
@@ -13,9 +13,7 @@
 
 ; Drei Fenster: (1) Editor (2) REPL (3) Präsentation
 
-(init "\n\n## Vortragsreihe des ISA\n\n"
-      "# Spezifikation von Datenstrukturen und Funktionen in Clojure mit `clojure.spec`\n\n### Burkhardt Renz, 6. Juli 2016")
-
+(init "#Spezifikation von Datenstrukturen und Funktionen in Clojure mit `clojure.spec`")
 
 ; 1. Motivation der Thematik -------------------------------------------------------------------------------------------
 
@@ -23,7 +21,7 @@
 \n\n\n
 - Clojure ist eine _dynamische_ Programmiersprache
 - In der Clojure-Gemeinschaft wird auf den Grundsatz _Data is the API_
-  Wert gelegt:<br /><br />
+  Wert gelegt:<br />
   ''The data *is* the API. <br />
   Design the data structures you’re going to accept & return at all
   the public entry-points of your library or application. <br />
@@ -46,11 +44,11 @@ Person in Java (javaperson/Person.java)
 
 ; Person in Clojure
 
-(def p {:name "Bloch"
+(def p1 {:name "Bloch"
         :vorname "Joshua"
         :gebdat "1961-08-28"})
 
-p
+p1
 
 (pres :add "
 Person in Clojure
@@ -63,11 +61,11 @@ Person in Clojure
 
 ; Aber das ist in Clojure auch möglich:
 
-(def x {:name 112
+(def x1 {:name 112
         :vorname "Joshua"
         :gebdat "Happy birthday"})
 
-x
+x1
 
 (pres :add  "
 _ABER_
@@ -114,7 +112,7 @@ Pragmatik
 ")
 
 (pres :add "
-## Was erwartet Sie heute?
+## Beispiele für den Einsatz von `spec`
 
 - Spezifikation einer beliebig geschachtelten Datenstruktur:<br />
   *Formeln der Aussagenlogik*
@@ -223,12 +221,12 @@ Pragmatik
 (s/valid? atom? 'P_<01>)
 ; => true
 
-; Nun können wir diese Prädikate verwenden, um einen einfachen Ausdruch
-; der Aussagenlogik zu spezifizieren. Mit def wird die spec in der
+; Nun können wir diese Prädikate verwenden, um einen einfachen Ausdruck
+; der Aussagenlogik zu spezifizieren. Mit s/def wird die spec in der
 ; Registry für specs unter dem klassifierten Keyword gespeichert
 ; und kann damit wiederverwendet werden.
 
-; Specs können mit and und or kombiniert werden. Im Fall von or
+; Specs können mit s/and und s/or kombiniert werden. Im Fall von s/or
 ; werden die Möglichkeiten durch ein Keyword gekennzeichnet.
 
 (s/def ::simple-expr (s/or :bool boolean?
@@ -280,16 +278,10 @@ Pragmatik
   Erläuterung, wenn der Wert nicht valide ist
 - `(s/describe spec)` <br />
   Beschreibung der Spezifikation
-
-  <br />
-
 - `(s/and spec1 spec2 ...)` <br />
   Konjunktion der Specs
 - `(s/or :tag1 spec1 :tag2 spec2 ...)` <br />
   Disjunktion der Specs mit Tags für die Varianten
-
-  <br />
-
 - `(s/def ::keyword spec)` <br />
   Speichern der Spezifikation in der zentralen Spec-Datenbank
   für die Wiederverwendung
@@ -360,6 +352,9 @@ Pragmatik
     ('#{ite} op)            3
     ('#{and or} op)        -1))
 
+; Eine Alternative wäre, die grammatik so zu definieren, dass jeder
+; Operator explizit in der Grammatik vorkommt
+
 ; Mit dem Ausdruck & von clojure.spec können wir uns nun den gefundenen Ausdruck
 ; hernehmen und mit einem zusätzlichen Prädikat versehen.
 
@@ -425,8 +420,6 @@ Pragmatik
 
 ; Man sieht hier, dass im Unterschied zu einer speziellen Validierungsfunktion die Meldungen über die Verletzung der
 ; Grammatik nicht unbedingt einfach zu lesen sind.
-
-
 
 ; Zusatz: Der Unterschied von s/or und s/alt:
 
@@ -584,7 +577,7 @@ amerikanischer Philosoph und Logiker)
 (s/valid? ::kripke-model ks1)
 
 ; Mit der Funktion s/describe kann man sich die Definition von Spezifikation ansehen:
-; Nicht nur ansehen: Man bekommt den Ausdrtuck selbst zurück
+; Nicht nur ansehen: Man bekommt den Ausdruck selbst zurück
 
 (s/describe ::kripke-model)
 ; => (and kripke-ok? (keys :req-un [:spec.guide/nodes :spec.guide/initial :spec.guide/edges]))
@@ -611,7 +604,6 @@ amerikanischer Philosoph und Logiker)
 ## Validierung von Funktionsausrufen mittels specs
 - Die erste und einfache Variante besteht darin, dass man valid? in der *Vor-* und *Nachbedingung*
   der Funktion verwendet
-
 ")
 
 (defn eval-phi
@@ -667,39 +659,7 @@ amerikanischer Philosoph und Logiker)
 (eval-phi phi-ok model-ok)
 ; => true
 
-
 ; Wir instrumentieren die Funktion, d.h. zur Laufzeit wird gegen die Spezifikation geprüft
-(stest/instrument `eval-phi)
-
-(eval-phi phi-ok model-ok)
-; CompilerException clojure.lang.ExceptionInfo: Call to #'spec.guide/eval-phi did not conform to spec:
-; In: [1] val: [P true Q false] fails spec: :spec.guide/model at: [:args :model :atom] predicate: atom?
-; :clojure.spec/args  ((and P Q) [P true Q false])
-; {:clojure.spec/problems {[:args :model :atom] {:pred atom?, :val [P true Q false], :via [:spec.guide/model], :in [1]}}, :clojure.spec/args ((and P Q) [P true Q false])}, compiling:(/Users/br/ESBDateien/Projekte/spec/src/spec/guide.clj:969:1)
-
-; Merkwürdig!!
-; Analysiert man  die Meldung, dann sieht man, dass die
-; erwartete Eingabe für das Modell ein Atom ist und nicht der
-; eigentlich gemeinte Vektor
-
-; Der Grund besteht darin, dass in der Definition von :args s/cat vorkommt und
-; in der Definition von :: model auch. Die beiden Anweisung werden kombiniert.
-; Deshalb wird ein Atom erwartet.
-; Man muss eine eigene spec für den Vektor machen (Schachteln von Audrücken)
-; siehe https://groups.google.com/forum/#!topic/clojure/rJzL2uD1u9o
-; und clojure.spec Guide Abschnitt über nested collections
-
-; Hier muss man dafür sorgen, dass das s/cat in :args und das s/cat mit dem
-; ::model beginnt nicht zusammengefasst werden. Also muss man mit ::model
-; ein neues Level der Schachtelung bestimmen
-
-(s/fdef eval-phi
-        :args (s/cat :phi ::fml :model (s/spec ::model))
-        :ret boolean?)
-
-; Die folgende Anweisung schaltet die Instrumentierung für die Funktion an,
-; d.h. beim Aufruf der Funktion wird die Spezifikation überprüft
-
 (stest/instrument `eval-phi)
 
 (eval-phi phi-ok model-ok)
@@ -822,8 +782,4 @@ amerikanischer Philosoph und Logiker)
   noch so? Aufwändig??
 - Inhärent unvollständig -- sobald Daten Code sind! (Beispiel Modell in der Aussagenlogik: Prädikat statt Wahrheitswert)
 - Generierte Tests (die Rich Hickey offenbar gut gefallen): in welchen Situationen wirklich sinnvoll?
-
-### Link
-- Alle gezeigten und verwendeten Dateien findet man auf [https://github.com/BRenzTHM/clj](https://github.com/BRenzTHM/clj)
-
 ")
