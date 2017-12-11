@@ -776,7 +776,7 @@ amerikanischer Philosoph und Logiker)
 ### Fragwürdig?
 
 - Fehlermeldungen zwangsläufig generisch, deshalb bei geschachtelten Strukturen
-  schwer zu lesen (daran ändert sich aber evtl noch was)
+  schwer zu lesen 
 - Standardisierte Zerlegung von Datenstrukturen kann auch stören (Beispiel Prüfung von `eval-phi`)
 - Argument der Leichtigkeit, weil dynamische Sprache? Sind die Spezifikationen
   noch so? Aufwändig??
