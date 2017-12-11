@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 13  
 ; Softwaretechnik mit Clojure
-; (c) 2014 - 2016 by Burkhardt Renz, THM
+; (c) 2014 - 2017 by Burkhardt Renz, THM
 
 (ns clj.l14-swt
   (:require [clj.presentation :refer :all])
@@ -8,7 +8,7 @@
   (:require [clojure.string :as str])
   (:require [clojure.math.combinatorics :refer (selections combinations)])
   (:require [clojure.tools.trace :refer :all])
-  (:require [schema.core :as s]))
+  )
 
 stop
 
@@ -57,11 +57,11 @@ Joshua Bloch: _Effective Java_ Item 13: Favor Immutability
 
 ## Identität - Zustand - Wert
 
-- Identität    
+- Identität    <br />
   Eine logische Entität ...
-- Zustand - Wert  
+- Zustand - Wert  <br />
   ... hat verschiedene Werte im Verlauf der Zeit
-- Zustandsübergang      
+- Zustandsübergang      <br />
     - Neuer Wert ist Funktion des bisherigen Werts (funktional)
     - Änderung des Werts der Referenz kontrolliert durch das System    
       (STM _Software Transactional Memory_ mit _Multiversion Concurrency Control_)
@@ -109,8 +109,8 @@ Aber
 
 - „Versteckte“ Abhängigkeiten
 - Dokumentation ist essentiell! (nicht so gutes Beispiel `(ns ...)`)
-- keine Prüfung durch Compiler - aber es gibt auch _Typed Clojure_
-  oder _Prismatic Schema_
+- keine Prüfung durch Compiler - aber es gibt _clojure.spec_ aber auch _Typed Clojure_
+  oder _Prismatic Schema_ 
 ")
 
 (pres :add "
@@ -124,7 +124,9 @@ Aber
 - man kann sogar den Record ''erweitern'' ohne Warnung:       
    Segen oder Fluch??
 - Ansatz: Variante von `defrecord` von Prismatic Schema,
-  siehe [Prismatic Schema](https://github.com/Prismatic/schema)
+  siehe [Prismatic Schema](https://github.com/Prismatic/schema)<br />
+  Man kann den Typ der Werte bei der Definition des Records angeben
+  
 ")
 
 ;; Beispiel Kunde
@@ -158,17 +160,19 @@ k3
 
 (defrecord Kunde [knr name vorname])
 
-(def k1 (->Kunde 1 "Schneider" "Hans"))
+(def k1 (Kunde. 1 "Schneider" "Hans"))
 (def k2 (map->Kunde {:knr 2 
                      :name "Künzel"
                      :vorname "Gisela"}))
 
 k1
 
+k2
+
 (class k1)
 ; => clj.l13_swt.Kunde
 
-(def k3 (->Kunde "hallo" 123 {:x 12}))
+(def k3 (Kunde. "hallo" 123 {:x 12}))
 
 k3
 ; => #clj.l13_swt.Kunde{:knr "hallo", :name 123, :vorname {:x 12}}
@@ -192,14 +196,13 @@ k3+
 
 ; weiterer Versuch
 ; durch Typhinweise kann man das etwas verbessern??
-(defrecord Artikel [^int artnr, ^String bez, ^int preis]) ; preis in Cent
+(defrecord Artikel [^long artnr, ^String bez, ^long preis]) ; preis in Cent
 
-(def a1 (->Artikel 1 "Regenschirm" 1299))
+(def a1 (Artikel. 1 "Regenschirm" 1299))
 ; okay
 
-(def a2 (->Artikel "hallo" "Regenschirm" 1299))
-; => CompilerException java.lang.ClassCastException
-
+(def a2 (Artikel. "hallo" "Regenschirm" 1299))
+; => CompilerException java.lang.IllegalArgumentException
 
 ; aber was passiert dann hier?
 (def a3 (map->Artikel
@@ -207,53 +210,16 @@ k3+
            :bez "Hemd"
            :preis 5095}))
 
-; CompilerException java.lang.ClassCastException: 
-; java.lang.Long cannot be cast to java.lang.Integer
-
-
-;; Artikel mit Prismatic Schema
-
-(s/defrecord Artikel
-             [artnr :- s/Int
-              bez   :- s/Str
-              preis :- s/Int])
-
-(def a5 (map->Artikel
-          {:artnr 5
-           :bez "Hemd"
-           :preis 5095}))
-
-(def a6 (map->Artikel
-          {:artnr "eine sechs hier"
-           :bez "Hemd"
-           :preis 5095}))
-
-(s/validate Artikel a5)
-; okay
-
-(s/validate Artikel a6)
-; CompilerException clojure.lang.ExceptionInfo: 
-; Value does not match schema: {:artnr (not (integer? "eine sechs hier"))} 
-
-(s/check Artikel a5)
-; => nil
-
-(s/check Artikel a6)
-; => {:artnr (not (integer? "eine sechs hier"))}
-
-(s/explain Artikel)
-; => (record clj.l13_swt.Artikel {:artnr Int, :bez Str, :preis Int})
+; Präzisere Vorgaben über den Aufbau des Records kann man mit clojure.spec machen
 
 (pres :add "
-## Prismatic Schema
+## `clojure.spec`
 
-Prismatic Schema eignet sich gut für folgendes Vorgehen:
+`clojure.spec` oder Prismatic Schema eignet sich gut für folgendes Vorgehen:
 
 - Daten, die wir selbst erzeugen, prüfen wir zur Laufzeit nicht
 - Daten, die wir aus externen Quellen entgegennehmen aber schon
 ")
-
-
 
 ;; 2. Softwaretechnik im Kleinen
 
@@ -448,7 +414,7 @@ Gesucht ist die Zahl der PKWs
   Beispiel `ring` hat 30+ Namensräume
 - Tricks zum Trennen der API für Verwender und für die Implementierung    
   `potemkin`    
-- siehe auch: [Mark Engelberg über Namensräume] (http://programming-puzzler.blogspot.de/2013/12/frustrations-with-namespaces-in-clojure.html)
+- siehe auch: [Mark Engelberg über Namensräume](http://programming-puzzler.blogspot.de/2013/12/frustrations-with-namespaces-in-clojure.html)
   
 ")
 
@@ -478,10 +444,10 @@ Gesucht ist die Zahl der PKWs
 ## Domänenspezifische Sprachen
 
 - Externe vs. interne DSLs    
-  XText vs Clojure    
+  XText vs Clojure    <br />
   Einsatz Fachexperte / Entwickler
-- Wrapper für Konstrukte anderer Sprachen    
+- Wrapper für Konstrukte anderer Sprachen     <br />
   Beispiel: `hiccup` für HTML
-- Makros für eine syntaktische Konstrukte   
+- Makros für eine syntaktische Konstrukte    <br />
   Beispiel `tools.trace` - `deftrace`
 ")

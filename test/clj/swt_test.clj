@@ -1,6 +1,6 @@
 ; Programmierung in Clojure Vorlesung 13  
 ; Softwaretechnik mit Clojure - Beispiel von Unittests
-; (c) 2014 - 2016 by Burkhardt Renz, THM
+; (c) 2014 - 2017 by Burkhardt Renz, THM
 
 
 (ns clj.swt-test
