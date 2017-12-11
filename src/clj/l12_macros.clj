@@ -52,10 +52,10 @@ stop
 ;; warum geht des mit der Funktion nicht?
 
 ;; sehen wir was das Makro and macht
-(macroexpand-1 '(and false true))
+(macroexpand-1 '(and x y))
 
 ;; und or
-(macroexpand-1 '(or true false))
+(macroexpand-1 '(or x y))
                
 (doc and)
 
@@ -230,7 +230,6 @@ Der Code soll ausgeführt werden, wenn die Bedingung _nicht_ erfüllt ist
 ;; Wir wollen aber die Elemente der Liste selbst.
 ;; Was hilft?
 
-
 ;; Noch ein Versuch!
 (defmacro unless [condition & body]
   `(when (not ~condition) ~@body))
@@ -269,14 +268,15 @@ Der Code soll ausgeführt werden, wenn die Bedingung _nicht_ erfüllt ist
   `(let [local ~x] (* local local)))
 
 (sq 7)
-; => CompilerException java.lang.RuntimeException: Can't let qualified name: clj-l12.macros/local 
+; => CompilerException java.lang.ExceptionInfo: Call to clojure.core/let did not conform to spec:
+; => weitere Angaben von clojure.spec
 
 ;; Backtick macht aus Symbolen qualifizierte Symbole, 
-;; also gerade keine lokalen, also
+;; also gerade keine lokalen Symbole, also
 ;; können sie nicht in let verwendet werden, 
-;; sie sind ja schon zugewiesen
+;; denn sie repräsentieren ja schon einen Wert vor dem let!!
 
-;; Abhilfe: ein im Kontext generiertes Symbol
+;; Abhilfe: ein im Kontext von let generiertes Symbol --
 ;; dazu gibt es gensym 
 
 (doc gensym)
@@ -291,8 +291,8 @@ Der Code soll ausgeführt werden, wenn die Bedingung _nicht_ erfüllt ist
 ;; Der Reader von Clojure macht aus jedem Symbol, 
 ;; das mit # endet mit gensym ein generiertes Symbol
 
-`(my-synbol#)
-; => (my-synbol__1911__auto__)
+`(my-symbol#)
+; => (my-symbol__1911__auto__) (oder so)
 
 ;; Also müssen wir im let ein generiertes Symbol verwenden:
 (defmacro sq [x]
@@ -304,7 +304,7 @@ Der Code soll ausgeführt werden, wenn die Bedingung _nicht_ erfüllt ist
 (macroexpand-1 '(sq (+ 3 4)))
 ; => (clojure.core/let [local__1614__auto__ (+ 3 4)] (clojure.core/* local__1614__auto__ local__1614__auto__)) 
 
-;; Jetzt verstehen wir den Code von and
+;; Jetzt verstehen wir den Code von (and ...)
 (source and)
 
 (defmacro myand 
@@ -313,7 +313,7 @@ Der Code soll ausgeführt werden, wenn die Bedingung _nicht_ erfüllt ist
   ([x & next]
   `(let [myand# ~x]
     (if myand# (myand ~@next) myand#))))
-; man braucht die Variante mit 0 und 1 Argumetne, damit die
+; man braucht die Variante mit 0 und 1 Argumente, damit die
 ; Rekursion auch mal endet!!
 
 (myand false false true)
@@ -325,7 +325,7 @@ Der Code soll ausgeführt werden, wenn die Bedingung _nicht_ erfüllt ist
 # Softwaretechnische Überlegungen zu Makros
 
 - Makros sind eine elegante Möglichkeit DSLs zu entwickeln
-- Wir werden solche noch kennenlernen
+- Wir werden solche noch kennenlernen in den Präsentationen
 - Die Verwendung von Makros lebt von einer brauchbaren Dokumentation
 - Andererseits: Makros können kompliziert sein
 - Fehler in Makros sich manchmal schwer zu finden
@@ -335,5 +335,12 @@ Der Code soll ausgeführt werden, wenn die Bedingung _nicht_ erfüllt ist
 
 
 ;; Offene Enden:
+
+;; (1)
 ;; &form und &env in der Makrodefinition 
-;; Makros in Funktionen höherer Ordnung als Parameter problematisch
+;; &env innerhalb eines Makros ergibt die Umgebung, d.h. ein Map der
+;;   lokal gebundenen Symbole mit der Adresse der zugehörigen lokalen Vars
+;; &form innerhalb eines Makros ergibt den Aufruf des Makros 
+
+;; (2)
+;; Makros in Funktionen höherer Ordnung als Parameter problematisch!!

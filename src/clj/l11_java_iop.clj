@@ -74,6 +74,8 @@ pt1
 ;=> true
 ; Warum: Point implementiert equals auf Basis der Werte von x und y
 
+(identical? pt pt1)
+
 ;; Felder von Objekten
 (set! (.x pt) 42)
 ; => 42
@@ -341,7 +343,7 @@ pt
 # Mit Clojure Java erzeugen
 
 - `reify` produziert eine Instanz einer anonymen Klasse, Methoden sind Java-Methoden
-- `proxy` produziert eine Instanz eines anonymen Klasse, Methoden sind Clojure-Funktionen
+- `proxy` produziert eine Instanz einer anonymen Klasse, Methoden sind Clojure-Funktionen
 - `gen-class` volle Implementierung einer Java-Klasse
 - `deftype` Implementierung von Interfaces
 - `defrecord` Implementierung einer werteorientierten Java-Klasse (Entität)

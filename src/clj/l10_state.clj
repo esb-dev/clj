@@ -447,7 +447,7 @@ ag
 
 - `send` und `send-off` geben dem Agenten eine Funktion zur Ausführung auf dem
   aktuellen Wert
-- `send` verwendet eine Thread aus einem fixen Pool - sollte man für Aufträge
+- `send` verwendet einen Thread aus einem fixen Pool - sollte man für Aufträge
   verwenden, die schnell ausgeführt werden können
 - `send-off` verwendet einen Thread aus einem Pool, der auch wachsen kann.    
   `send-off` eignet sich also z.B. auch für I/O
