@@ -452,11 +452,11 @@ Pragmatik
 (pres "
 ## Spezifikation strukturierte Kollektionen 1
 ### Modelle der Aussagenlogik
-- Ein Modell in der Aussagenlogik ist eine Abbildung der Atome der Sprache auf Wahrheitswerte
-- In Clojure repräsentieren wir ein Modell als einen Vektor von Atomen mit zugehörigem Wahrheitswert
+- Ein Modell in der Aussagenlogik ist eine Abbildung der Atome der Sprache auf Wahrheitswerte,
+- In Clojure repräsentieren wir ein Modell als einen Vektor von Atomen mit zugehörigem Wahrheitswert.
 - Warum so? Diesen Vektor können wir in einem `let` verwenden, um die Formel in diesem
  Modell auszuwerten. Diese Repräsentation des Models entspricht also genau dem Binden von
- Werten an Symbole in der _Philosopie_ von Clojure
+ Werten an Symbole in der _Philosopie_ von Clojure.
 ")
 
 (s/def ::model-1 (s/and vector? (s/* (s/cat :atom atom? :value boolean?))))
@@ -474,6 +474,8 @@ Pragmatik
 ; => false
 
 ; subtiler Unterschied
+; es spielt bei der Definition des Modells eine Rolle, ob wir
+; einen Wahrheitswert oder ein Prädikat angeben!
 (s/valid? ::model-1 '[P (= 1 1) Q false])
 ; => false
 
@@ -783,3 +785,13 @@ amerikanischer Philosoph und Logiker)
 - Inhärent unvollständig -- sobald Daten Code sind! (Beispiel Modell in der Aussagenlogik: Prädikat statt Wahrheitswert)
 - Generierte Tests (die Rich Hickey offenbar gut gefallen): in welchen Situationen wirklich sinnvoll?
 ")
+
+; mit dem Punkt Daten = Code ist das Beispiel
+
+;(s/valid? ::model-1 '[P (= 1 1) Q false])
+; => false
+
+;(s/valid? ::model-1 ['P (= 1 1) 'Q false])
+; => true
+
+; gemeint
