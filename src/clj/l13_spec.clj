@@ -473,6 +473,9 @@ Pragmatik
 (s/valid? ::model-1 '[P true Q])
 ; => false
 
+(s/valid? ::model-1 '[P true P false])
+; => true
+
 ; subtiler Unterschied
 ; es spielt bei der Definition des Modells eine Rolle, ob wir
 ; einen Wahrheitswert oder ein Prädikat angeben!

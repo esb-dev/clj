@@ -271,6 +271,8 @@ Der Code soll ausgeführt werden, wenn die Bedingung _nicht_ erfüllt ist
 ; => CompilerException java.lang.ExceptionInfo: Call to clojure.core/let did not conform to spec:
 ; => weitere Angaben von clojure.spec
 
+(macroexpand-1 '(sq 7))
+
 ;; Backtick macht aus Symbolen qualifizierte Symbole, 
 ;; also gerade keine lokalen Symbole, also
 ;; können sie nicht in let verwendet werden, 

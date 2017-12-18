@@ -1,4 +1,4 @@
-; Programmierung in Clojure Vorlesung 13  
+; Programmierung in Clojure Vorlesung 14  
 ; Softwaretechnik mit Clojure
 ; (c) 2014 - 2017 by Burkhardt Renz, THM
 
@@ -26,16 +26,15 @@ stop
 Eine Funktion ist eine _reine_ Funktion, wenn sie keine Seiteneffekte hat
 und bei jedem Aufruf mit bestimmten Parametern denselben Wert zurück gibt
 
-- Testbarkeit    
+- Testbarkeit <br />   
   kann leicht getestet werden, da unabhängig vom Kontext
-- Parallele Ausführbarkeit     
+- Parallele Ausführbarkeit  <br />
   kann auf verschiedenen Threads ohne gegenseitige Beeinflussung ausgeführt werden
-- Wiederholbarkeit      
+- Wiederholbarkeit     <br /> 
   Ergebnisse können gemerkt werden und müssen ggfs nicht neu berechnet werden ( _memoization_ )
-- Ersetzbarkeit    
+- Ersetzbarkeit   <br /> 
   können leicht durch andere Implementierung ersetzt werden, ohne den Rest des
   Systems zu beeinflussen (Lokalität)
-  
 ")
 
 (pres "
@@ -118,7 +117,7 @@ Aber
 
 - Maps sind generisch
 - Records werden mit `defrecord` zu Java-Klassen kompiliert
-- Records haben automatische ''Konstruktoren'':        
+- Records haben automatische ''Konstruktoren'': <br />        
    `->Record` und `map->Record`
 - aber: auch hier keine Prüfung durch Compiler
 - man kann sogar den Record ''erweitern'' ohne Warnung:       
@@ -208,7 +207,12 @@ k3+
 (def a3 (map->Artikel
           {:artnr 3
            :bez "Hemd"
-           :preis 5095}))
+           :preis 5095
+           :farbe :rot}))
+
+a3 
+
+(class a3)
 
 ; Präzisere Vorgaben über den Aufbau des Records kann man mit clojure.spec machen
 
@@ -240,10 +244,10 @@ Auf dem Parkplatz sind Autos und Motorräder. Wir kennen die
 Anzahl der Fahrzeuge und die Anzahl der Räder.
 
 Gesucht ist die Zahl der PKWs
-
 ")
 
 ;; Erster Versuch
+;; #pkw = (#räder - 2*#fahrzeuge)/2
 (defn zahl-pkw
   "Berechnet die Zahl der PKWs ausgehend von 
    n der Zahl der Fahrzeuge und m der Zahl der Räder auf dem Parkplatz"
@@ -267,7 +271,6 @@ Gesucht ist die Zahl der PKWs
     :post [(>= % 0)] }          
     (/ (- m (* 2 n)) 2))
     
-
 (zahl-pkw 5 8)
 ; => AssertionError Assert failed: (<= 0 (* 2 n) m (* 4 n))  clj.l13-swt/zahl-pkw
 
@@ -327,7 +330,6 @@ Gesucht ist die Zahl der PKWs
 ## Testen
 
 - es ist sehr einfach _Unittests_ zu machen
-
 ")
 
 ;; wieder die Funktion über die Zahl der PKWs, diesmal mit einer Exception
@@ -341,6 +343,16 @@ Gesucht ist die Zahl der PKWs
     (throw (ArithmeticException. "Parameter nicht erlaubt."))))
 
 ;; siehe test/clj/swt-test.clj aufrufen
+
+
+; zurück in unseren Namensraum
+(ns clj.l14-swt
+  (:require [clj.presentation :refer :all])
+  (:require [clojure.repl :refer :all])
+  (:require [clojure.string :as str])
+  (:require [clojure.math.combinatorics :refer (selections combinations)])
+  (:require [clojure.tools.trace :refer :all])
+  )
 
 ; 2.3 Tracing
 
@@ -451,3 +463,7 @@ Gesucht ist die Zahl der PKWs
 - Makros für eine syntaktische Konstrukte    <br />
   Beispiel `tools.trace` - `deftrace`
 ")
+
+;; Systematische Untersuchungen des Themas Softwaretechnik 
+;; in funktionalen Sprachen bzw. speziell in Clojure
+;; git es meines Wissens nicht
