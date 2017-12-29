@@ -1,7 +1,7 @@
 
 clj
 
-Veranstaltung Programmierung in Clojure
+Veranstaltung "Programmierung in Clojure"
 
 ## License
 
