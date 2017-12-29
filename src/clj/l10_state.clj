@@ -12,6 +12,17 @@ stop
 (init "Identität, Zustand und Synchronisationskontrolle")
 
 (pres :add "
+# Scherz von Guy Steele
+
+... And some people prefer not to commingle the functional,
+lambda-calculus part of a language with the parts that
+do side effects.  
+
+It seems they believe in the separation of Church and state.  :-)  :-)  :-)
+
+Guy Steele (https://people.csail.mit.edu/gregs/ll1-discuss-archive-html/msg01134.html)")
+
+(pres "
 # Clojures Verständnis von Identität und Zeit
 
 ![Zeitmodell](resources/time-model.jpg)

@@ -234,7 +234,7 @@ a3
 
 ## Kontrakt von Funktionen
 
-- Vorbedindungen
+- Vorbedingungen
 - Nachbedingungen 
 - Assertions
 
