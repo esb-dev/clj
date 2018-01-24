@@ -353,7 +353,9 @@ KontoA
 - Bibliotheken:     
   [CrossClj](https://crossclj.info)     
   [The Clojure Toolbox](http://www.clojure-toolbox.com)     
-- Vorlesungsskripte [Programmieren in Clojure](https://github.com/esb-dev/clj)
+- Vorlesungsskripte: 
+  [Programmieren in Clojure](https://github.com/esb-dev/clj)          <br/>
+  [Attila Egri-Nagy: Poetry of Programming](https://egri-nagy.github.io/popbook/)
 - und unzählige mehr  
 ")
 
