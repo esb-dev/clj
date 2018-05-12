@@ -159,7 +159,7 @@ k3
 
 (defrecord Kunde [knr name vorname])
 
-(def k1 (Kunde. 1 "Schneider" "Hans"))
+(def k1 (->Kunde 1 "Schneider" "Hans"))
 (def k2 (map->Kunde {:knr 2 
                      :name "Künzel"
                      :vorname "Gisela"}))
@@ -197,10 +197,10 @@ k3+
 ; durch Typhinweise kann man das etwas verbessern??
 (defrecord Artikel [^long artnr, ^String bez, ^long preis]) ; preis in Cent
 
-(def a1 (Artikel. 1 "Regenschirm" 1299))
+(def a1 (->Artikel 1 "Regenschirm" 1299))
 ; okay
 
-(def a2 (Artikel. "hallo" "Regenschirm" 1299))
+(def a2 (->Artikel "hallo" "Regenschirm" 1299))
 ; => CompilerException java.lang.IllegalArgumentException
 
 ; aber was passiert dann hier?

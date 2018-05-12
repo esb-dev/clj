@@ -225,8 +225,8 @@ age
 
 ;; Zwei Refs für Konto 1 und 2 mit Saldo 100
 ;; ref erzeugt ein Ref
-(def a1-ref (ref (Account. "1" 100)))
-(def a2-ref (ref (Account. "2" 100)))
+(def a1-ref (ref (->Account "1" 100)))
+(def a2-ref (ref (->Account. "2" 100)))
 
 ;; deref oder @ ergeben den Wert der Ref
 @a1-ref
@@ -240,7 +240,7 @@ age
   [account amount]
   (assoc account :balance (- (:balance account) amount))) 
 
-(def a1 (Account. "1" 100))
+(def a1 (->Account "1" 100))
 (withdraw a1 20)
 ; => #clj.state.Account{:id "1", :balance 80}
 
@@ -266,7 +266,7 @@ age
   (alter to deposit amount))
 
 ; Zweites Konto
-(def a2 (Account. "2" 100))
+(def a2 (->Account "2" 100))
 
 (transfer a1 a2 20)
 ; => ClassCastException clj.state.Account cannot be cast to clojure.lang.Ref

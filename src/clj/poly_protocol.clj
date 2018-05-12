@@ -9,7 +9,8 @@ stop
 (defrecord Kunde [kndNr name vorname])
 
 (defn kunde [kndNr name vorname]
-  (Kunde. kndNr name vorname))
+  (->Kunde kndNr name vorname))
+; (->Kunde ...) ist ein von Clojure generierter Konstruktor für Records vom Typ Kunde
 
 ; identisch zu poly-multi
 (def test-kunden
@@ -22,7 +23,7 @@ test-kunden
 (defrecord Artikel [artNr bez preis])
 
 (defn artikel [artNr bez preis]
-  (Artikel. artNr bez preis))
+  (->Artikel artNr bez preis))
 
 (def test-artikel
   [(artikel 1 "BitteEinBit" 1.20)
