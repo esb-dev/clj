@@ -319,6 +319,26 @@ countif
 
 (two "hallo")
 
+; juxt
+;Takes a set of functions and returns a fn that is the juxtaposition
+;of those fns.  The returned fn takes a variable number of args, and
+;returns a vector containing the result of applying each fn to the
+;args (left-to-right).
+;((juxt a b c) x) => [(a x) (b x) (c x)]
+
+; juxt kann man in vielen Situationen geschickt verwenden
+(def coll1 [1 3 5 7 9])
+
+((juxt count #(apply min %) #(apply + %)) coll1)
+; => [5 1 25]
+
+(def sum #(apply + %))
+
+((juxt count sum) coll1)
+; => [5 25]
+
+; siehe just juxt auf https://porkostomus.gitlab.io
+
 ; Funktionen, die Funktionen erwarten
 
 (filter even? [1 2 3 4 5 6])
