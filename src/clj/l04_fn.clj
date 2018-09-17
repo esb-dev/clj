@@ -337,6 +337,12 @@ countif
 ((juxt count sum) coll1)
 ; => [5 25]
 
+; juxt findet palindrome!
+((juxt seq reverse) "anna")
+((juxt seq reverse) "hans")
+(apply = ((juxt seq reverse) "anna"))
+(apply = ((juxt seq reverse) "hans"))
+
 ; siehe just juxt auf https://porkostomus.gitlab.io
 
 ; Funktionen, die Funktionen erwarten
