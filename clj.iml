@@ -42,7 +42,7 @@
     <orderEntry type="library" name="Leiningen: com.miglayout/miglayout:3.7.4" level="project" />
     <orderEntry type="library" name="Leiningen: dire:0.5.4" level="project" />
     <orderEntry type="library" name="Leiningen: j18n:1.0.2" level="project" />
-    <orderEntry type="library" name="Leiningen: markdown-clj:1.0.1" level="project" />
+    <orderEntry type="library" name="Leiningen: markdown-clj:1.0.5" level="project" />
     <orderEntry type="library" name="Leiningen: org.apache.xmlgraphics/batik-awt-util:1.8" level="project" />
     <orderEntry type="library" name="Leiningen: org.apache.xmlgraphics/batik-css:1.8" level="project" />
     <orderEntry type="library" name="Leiningen: org.apache.xmlgraphics/batik-dom:1.8" level="project" />
@@ -53,23 +53,23 @@
     <orderEntry type="library" name="Leiningen: org.bouncycastle/bcmail-jdk14:1.38" level="project" />
     <orderEntry type="library" name="Leiningen: org.bouncycastle/bcprov-jdk14:1.38" level="project" />
     <orderEntry type="library" name="Leiningen: org.bouncycastle/bctsp-jdk14:1.38" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/clojure:1.9.0" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/core.async:0.3.465" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/clojure:1.10.0" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/core.async:0.4.490" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.cache:0.6.5" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.incubator:0.1.3" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.logic:0.8.11" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.memoize:0.5.9" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/core.specs.alpha:0.1.24" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/core.specs.alpha:0.2.44" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/data.priority-map:0.0.7" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/math.combinatorics:0.1.4" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/math.numeric-tower:0.0.4" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/spec.alpha:0.1.143" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/tools.analyzer.jvm:0.7.0" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/spec.alpha:0.2.176" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/tools.analyzer.jvm:0.7.2" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/tools.analyzer:0.6.9" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/tools.macro:0.1.5" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/tools.nrepl:0.2.12" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/tools.reader:1.0.0-beta4" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/tools.trace:0.7.9" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/tools.trace:0.7.10" level="project" />
     <orderEntry type="library" name="Leiningen: org.ow2.asm/asm-all:4.2" level="project" />
     <orderEntry type="library" name="Leiningen: org.swinglabs.swingx/swingx-action:1.6.3" level="project" />
     <orderEntry type="library" name="Leiningen: org.swinglabs.swingx/swingx-autocomplete:1.6.3" level="project" />
@@ -79,14 +79,14 @@
     <orderEntry type="library" name="Leiningen: org.swinglabs.swingx/swingx-plaf:1.6.3" level="project" />
     <orderEntry type="library" name="Leiningen: quil/gluegen-rt-fat:2.3.2" level="project" />
     <orderEntry type="library" name="Leiningen: quil/jogl-all-fat:2.3.2" level="project" />
-    <orderEntry type="library" name="Leiningen: quil/processing-core:3.2.4" level="project" />
-    <orderEntry type="library" name="Leiningen: quil/processing-dxf:3.2.4" level="project" />
-    <orderEntry type="library" name="Leiningen: quil/processing-js:1.6.4.0" level="project" />
-    <orderEntry type="library" name="Leiningen: quil/processing-pdf:3.2.4" level="project" />
-    <orderEntry type="library" name="Leiningen: quil/processing-svg:3.2.4" level="project" />
-    <orderEntry type="library" name="Leiningen: quil:2.6.0" level="project" />
+    <orderEntry type="library" name="Leiningen: quil/processing-core:3.3.7" level="project" />
+    <orderEntry type="library" name="Leiningen: quil/processing-dxf:3.3.7" level="project" />
+    <orderEntry type="library" name="Leiningen: quil/processing-js:1.6.6.0" level="project" />
+    <orderEntry type="library" name="Leiningen: quil/processing-pdf:3.3.7" level="project" />
+    <orderEntry type="library" name="Leiningen: quil/processing-svg:3.3.7" level="project" />
+    <orderEntry type="library" name="Leiningen: quil:2.8.0" level="project" />
     <orderEntry type="library" name="Leiningen: robert/hooke:1.3.0" level="project" />
-    <orderEntry type="library" name="Leiningen: seesaw:1.4.5" level="project" />
+    <orderEntry type="library" name="Leiningen: seesaw:1.5.0" level="project" />
     <orderEntry type="library" name="Leiningen: slingshot:0.10.3" level="project" />
     <orderEntry type="library" name="Leiningen: xalan:2.7.0" level="project" />
     <orderEntry type="library" name="Leiningen: xml-apis/xml-apis-ext:1.3.04" level="project" />
